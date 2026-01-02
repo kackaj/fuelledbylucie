@@ -166,7 +166,7 @@ const App = () => {
             <div className="lg:col-span-5 relative">
               <div className="relative rounded-[3rem] overflow-hidden shadow-2xl aspect-[4/5] group border border-white/10">
                 <img 
-                  src="lucka_background_ai_ornge(4).jpg" 
+                  src="lucie_background.jpg" 
                   alt="Approachable Performance Nutrition" 
                   className="w-full h-full object-cover"
                 />
@@ -190,7 +190,7 @@ const App = () => {
             <div className="relative">
                <div className="rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[4/5] bg-stone-900 border border-white/5 relative">
                   <img 
-                    src="lucie_background.jpg" 
+                    src="lucie_hyrox.png" 
                     alt="Lucie - Your Nutrition Partner" 
                     className="w-full h-full object-cover"
                   />
