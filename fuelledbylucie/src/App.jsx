@@ -17,7 +17,8 @@ import {
   Minus,
   Quote,
   ArrowRight,
-  Dumbbell
+  Dumbbell,
+  Award
 } from 'lucide-react';
 
 // --- Sub-Components ---
@@ -115,8 +116,6 @@ const App = () => {
     }
   }, []);
 
-  // Fixed Navigation Logic: Avoid setting window.location.hash directly 
-  // as it triggers security errors in this environment.
   const handleNavClick = (id) => {
     scrollToId(id);
   };
@@ -161,15 +160,15 @@ const App = () => {
         answer: "No. Sustainable nutrition is built on balance, not restriction. We focus on adding what your body needs rather than just taking things away. We find a way to fit your lifestyle into your goals."
     },
     {
+      question: "I think I eat pretty well, but I am burned out midway through my workout.",
+      answer: "This is a classic sign of a fueling mismatch. We'll look at your pre-training nutrition and post-workout recovery window to ensure you aren't running on fumes. You shouldn't feel wrecked after every session."
+    },
+    {
       question: "I want to build muscle/lose fat. Do you help with macros?",
       answer: "Yes. Whether you are chasing aesthetics, strength, or endurance, we will dial in your specific macro-nutrient needs to ensure you are getting exactly what you need to perform and recover."
     },
     {
-      question: "I have a complex relationship with food. Can you help?",
-      answer: "This is my specialty. My approach isn't just about calories; it's about psychology and biology. We work together to rebuild your trust in your body, moving away from guilt and towards nourishment."
-    },
-    {
-      question: "What does a 'Diagnostic Consult' involve?",
+      question: "What does an 'Initial Consult' involve?",
       answer: "It's a simple, 15-minute chat where we talk about where you are and where you want to be. No judgment, no pressure—just a chance to see if we're a good fit to work together."
     },
     {
@@ -182,7 +181,7 @@ const App = () => {
     <div className="min-h-screen bg-stone-950 font-sans text-stone-300 selection:bg-orange-500 selection:text-black overflow-x-hidden">
       
       {/* Navigation */}
-      <nav className={`fixed w-full z-[100] transition-all duration-300 ${scrolled ? 'bg-stone-950/90 backdrop-blur-md py-3 border-b border-white/5' : 'bg-transparent py-4 md:py-6'}`}>
+      <nav className={`w-full z-[100] transition-all duration-300 absolute md:fixed ${scrolled ? 'md:bg-stone-950/90 md:backdrop-blur-md py-3 border-b border-white/5' : 'bg-transparent py-4 md:py-6'}`}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex justify-between items-center">
             {/* Logo */}
@@ -202,7 +201,7 @@ const App = () => {
               <NavLink onClick={() => handleNavClick('services')}>Services</NavLink>
               <NavLink onClick={() => handleNavClick('faq')}>FAQ</NavLink>
               <button 
-                onClick={() => handleNavClick('booking')} 
+                onClick={() => handleNavClick('contact')} 
                 className="bg-orange-500 text-black px-6 py-2.5 rounded-full font-black text-[10px] uppercase tracking-[0.2em] hover:bg-white transition-all transform hover:-translate-y-0.5 active:scale-95 shadow-lg shadow-orange-500/20"
               >
                 Let's Chat
@@ -228,7 +227,7 @@ const App = () => {
               
               <div className="pt-8 border-t border-white/10 mt-8">
                 <button 
-                  onClick={() => handleNavClick('booking')} 
+                  onClick={() => handleNavClick('contact')} 
                   className="w-full text-center bg-orange-500 text-black py-4 font-black uppercase text-lg rounded-xl shadow-xl shadow-orange-500/10 active:scale-95 transition-transform"
                 >
                   Book Free Call
@@ -260,18 +259,22 @@ const App = () => {
                 <span className="animate-pulse">●</span> Spots available for {currentYear}
               </div>
               
-              <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter text-white leading-[0.9] uppercase italic">
-                Fuel The Life <br/>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">You Love.</span>
+              <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black tracking-tighter text-white leading-[0.9] uppercase italic">
+                <span className="block">No Extremes.</span>
+                <span className="block">No BS.</span>
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Just Balance.</span>
               </h1>
               
-              <p className="text-lg md:text-xl text-stone-400 font-medium max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                Whether you're hitting the gym for the first time or training for a podium finish, I help you eat with purpose. <span className="text-white">Real food for real goals.</span>
-              </p>
+              <div className="flex flex-col gap-3">
+                  <p className="text-lg md:text-2xl text-stone-300 font-bold max-w-xl mx-auto lg:mx-0 leading-tight">
+                    Sports nutrition for training & real life.
+                  </p>
+                  <div className="w-20 h-1 bg-orange-500 mx-auto lg:mx-0 rounded-full mt-2"></div>
+              </div>
               
-              <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center lg:justify-start">
+              <div className="flex flex-col sm:flex-row gap-4 pt-6 justify-center lg:justify-start">
                 <button 
-                  onClick={() => handleNavClick('booking')}
+                  onClick={() => handleNavClick('contact')}
                   className="px-8 py-4 bg-orange-500 text-black rounded-full font-black text-sm uppercase tracking-widest hover:bg-white transition-all shadow-[0_10px_40px_-10px_rgba(249,115,22,0.5)] transform hover:-translate-y-1"
                 >
                   Start Your Journey
@@ -294,6 +297,7 @@ const App = () => {
                   src="lucie_background.jpg" 
                   alt="Approachable Performance Nutrition" 
                   className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700"
+                  onError={(e) => {e.target.style.display='none'; e.target.parentElement.style.backgroundColor='#1c1917'}}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                 
@@ -322,22 +326,30 @@ const App = () => {
                <div className="absolute -inset-4 bg-orange-500/20 blur-xl rounded-full opacity-50"></div>
                <div className="rounded-[2rem] overflow-hidden relative shadow-2xl rotate-2 hover:rotate-0 transition-all duration-500">
                   <img 
-                    src="lucie_hyrox.png" 
+                    src="lucie_hyrox.jpeg" 
                     alt="Lucie - at Hyrox " 
                     className="w-full h-full object-cover"
+                    onError={(e) => {e.target.style.display='none'; e.target.parentElement.style.backgroundColor='#1c1917'}}
                   />
+                  {/* Fallback box if image missing */}
+                  <div className="absolute inset-0 flex items-center justify-center bg-stone-800 -z-10">
+                    <Users className="w-16 h-16 text-stone-700" />
+                  </div>
                </div>
             </div>
             
             <div className="space-y-8 order-1 md:order-2">
-              <SectionHeader subtitle="My Story" title={<>More Than <br/> Just Meal Plans</>} />
+              <SectionHeader subtitle="The Coach" title={<>Hi, I'm <br/> Lucie 👋</>} />
               
               <div className="space-y-6 text-lg text-stone-400 leading-relaxed font-medium">
                 <p>
-                  Hi, I'm Lucie. I'm a Sydney-based nutritionist who helps people navigate the noise of the wellness industry.
+                  I'm a Sydney-based nutritionist, personal trainer, and baker who helps people navigate the noise of the wellness industry.
                 </p>
                 <p>
-                  I've spent <span className="text-white font-black decoration-orange-500 underline underline-offset-4 decoration-2">7+ years</span> helping people simplify the science. Whether you're trying to lose weight, gain muscle, or just have more energy for your training, I'm here to help.
+                  My philosophy is simple: <span className="text-white font-bold">No extremes. No fear foods. No nonsense.</span>
+                </p>
+                <p>
+                  I've spent <span className="text-white font-black decoration-orange-500 underline underline-offset-4 decoration-2">7+ years</span> helping people simplify the science. Whether you're trying to lose weight, gain muscle, or just have more energy for your training, I'm here to help you fuel your life, not control it.
                 </p>
                 
                 {/* Toggle Story Section */}
@@ -346,7 +358,7 @@ const App = () => {
                         onClick={() => setShowFullStory(true)}
                         className="flex items-center gap-2 text-orange-500 font-black uppercase text-xs tracking-widest hover:text-white transition-colors py-2"
                     >
-                        Read My Full Journey <ChevronRight className="h-4 w-4" />
+                        Read My Full Story <ChevronRight className="h-4 w-4" />
                     </button>
                 ) : (
                     <div className="animate-in fade-in slide-in-from-top-4 duration-500 space-y-6 border-l-2 border-orange-500/30 pl-6 mt-6">
@@ -359,9 +371,12 @@ const App = () => {
                         <p>
                             Now, I combine deep empathy with hard science. I don't just hand you a PDF and wish you luck. I dig deep into the "why" behind your habits to build a lifestyle that supports your mental health just as much as your physical health.
                         </p>
+                        <p className="text-2xl font-black italic uppercase tracking-tighter text-white pt-4 leading-none">
+                            Let’s get fuelled ❤️‍🔥
+                        </p>
                         <button 
                             onClick={() => setShowFullStory(false)}
-                            className="text-stone-500 font-bold uppercase text-[10px] tracking-widest hover:text-white transition-colors"
+                            className="text-stone-500 font-bold uppercase text-[10px] tracking-widest hover:text-white transition-colors pt-4"
                         >
                             Show Less
                         </button>
@@ -394,7 +409,7 @@ const App = () => {
               icon={Zap}
               title="Gym Starter Audit"
               desc="Just joined a gym? A 60-minute deep dive to set up your nutrition basics so you don't waste your 'newbie gains'."
-              onClick={() => handleNavClick('booking')}
+              onClick={() => handleNavClick('contact')}
             />
             
             <ServiceCard 
@@ -402,14 +417,14 @@ const App = () => {
               title="The 12-Week Shift"
               desc="My signature program. We rebuild your relationship with food while fueling your specific physique or strength goals."
               featured={true}
-              onClick={() => handleNavClick('booking')}
+              onClick={() => handleNavClick('contact')}
             />
 
             <ServiceCard 
               icon={Trophy}
               title="Performance Prep"
               desc="Training for a marathon, Hyrox, or competition? We dial in your macros and timing to ensure you hit the start line fully fuelled."
-              onClick={() => handleNavClick('booking')}
+              onClick={() => handleNavClick('contact')}
             />
           </div>
         </div>
@@ -425,7 +440,7 @@ const App = () => {
                 "Lucie didn't just change my diet, she changed how I view my training."
               </h3>
               <div>
-                <p className="text-white font-bold text-lg">Sarah Jenkins</p>
+                <p className="text-white font-bold text-lg">Sarah J.</p>
                 <p className="text-orange-500 text-sm font-bold uppercase tracking-wider">Strength Athlete</p>
               </div>
             </div>
@@ -466,14 +481,12 @@ const App = () => {
             <p className="text-lg md:text-2xl text-black/80 mb-12 max-w-2xl mx-auto font-bold">
               Let's have a chat. No pressure, no sales pitch. Just a conversation about where you are and where you want to be.
             </p>
-            <a 
-              href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ0r8R3evcxUWpNlOdmjuJeXV-YSMNlFn9pIEKywdx0dZcwr9kUQML_70jCKK51Yc6rVy3WQzFVC?gv=true"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-10 py-6 bg-black text-white font-black text-lg md:text-xl rounded-full hover:scale-105 transition-all shadow-2xl uppercase italic tracking-wider"
+            <button 
+              onClick={() => handleNavClick('contact')}
+              className="inline-flex items-center gap-3 px-10 py-6 bg-black text-white font-black text-lg md:text-xl rounded-full hover:scale-105 transition-all shadow-2xl uppercase italic tracking-wider cursor-pointer"
             >
               Book Your Free Call <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
-            </a>
+            </button>
         </div>
       </section>
 
@@ -510,7 +523,7 @@ const App = () => {
                 <div className="text-center py-12 animate-in fade-in zoom-in">
                   <CheckCircle className="h-16 w-16 text-orange-500 mx-auto mb-6" />
                   <h3 className="text-3xl font-black italic uppercase text-white mb-2">Message Sent!</h3>
-                  <p className="text-stone-400">I'll get back to you within 24 hours.</p>
+                  <p className="text-stone-400">I'll get back to you within 24 hours to organize your call.</p>
                   <button onClick={() => setStatus("IDLE")} className="text-orange-500 font-bold uppercase text-xs mt-6 hover:underline">Send another</button>
                 </div>
               ) : (
@@ -518,8 +531,9 @@ const App = () => {
                    <h3 className="text-2xl font-black uppercase italic mb-6">Send a Message</h3>
                    <div className="grid md:grid-cols-2 gap-4">
                       <input required name="name" placeholder="NAME" className="w-full bg-stone-950 border border-white/10 rounded-xl p-4 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700" />
-                      <input required name="email" type="email" placeholder="EMAIL" className="w-full bg-stone-900 border border-white/10 rounded-xl p-4 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700" />
+                      <input required name="phone" type="tel" placeholder="PHONE" className="w-full bg-stone-950 border border-white/10 rounded-xl p-4 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700" />
                    </div>
+                   <input required name="email" type="email" placeholder="EMAIL" className="w-full bg-stone-900 border border-white/10 rounded-xl p-4 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700" />
                    <textarea required name="message" rows="4" placeholder="HOW CAN I HELP?" className="w-full bg-stone-950 border border-white/10 rounded-xl p-4 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700 resize-none"></textarea>
                    <button 
                      type="submit"
@@ -533,9 +547,22 @@ const App = () => {
               )}
             </div>
           </div>
-          <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold text-stone-600 uppercase tracking-widest">
-            <p>&copy; {currentYear} Fuelled By Lucie.</p>
-            <p>Designed with Heart & Fire.</p>
+          <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">
+                <p>&copy; {currentYear} Fuelled By Lucie.</p>
+            </div>
+            
+            {/* Accreditation Badge */}
+            <a href="https://nutritioncouncilaustralia.com.au/nrn/" target="_blank" className="flex items-center gap-3 bg-stone-900 px-4 py-2 rounded-lg border border-white/5 hover:border-orange-500 transition-colors group">
+                <div className="bg-orange-500 p-1.5 rounded-full group-hover:scale-110 transition-transform">
+                    <Award className="h-4 w-4 text-black" />
+                </div>
+                <div className="text-left">
+                    <p className="text-[9px] text-stone-500 font-bold uppercase tracking-wider">Nationally Recognised Nutritionist</p>
+                    <p className="text-[11px] text-white font-bold tracking-tight">Nutrition Council Australia</p>
+                    <p className="text-[9px] text-orange-500 font-bold uppercase tracking-wider mt-0.5">Reg: 1780</p>
+                </div>
+            </a>
           </div>
         </div>
       </footer>
