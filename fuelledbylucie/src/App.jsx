@@ -542,7 +542,7 @@ const App = () => {
                    >
                      {status === "SUBMITTING" ? "Sending..." : <>Send Message <Send className="h-4 w-4" /></>}
                    </button>
-                   {status === "ERROR" && <p className="text-orange-500 text-[10px] font-black uppercase text-center">Something went wrong. Please try again.</p>}
+                   {status === "ERROR" && <p className="text-orange-500 text-[10px] font-black uppercase text-center">Something went wrong. Please try again or contact me directly at fuelledbylucie@gmail.com</p>}
                 </form>
               )}
             </div>
