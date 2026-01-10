@@ -445,14 +445,16 @@ const App = () => {
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="relative flex items-center pt-32 pb-20 md:min-h-screen overflow-hidden">
-        {/* Ambient Background */}
-        <div className="absolute top-0 right-0 w-3/4 h-3/4 bg-orange-500/5 rounded-full filter blur-[100px] pointer-events-none"></div>
+      <section id="home" className="relative flex items-center pt-32 pb-20 md:min-h-screen overflow-hidden bg-black">
+        <div
+          className="pointer-events-none absolute top-0 right-0 h-3/4 w-3/4 rounded-full bg-orange-500/5 blur-[100px] filter z-0"
+          aria-hidden="true"
+        ></div>
 
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 w-full">
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
 
-            <div className="lg:col-span-7 space-y-8 text-center lg:text-left">
+            <div className="lg:col-span-7 space-y-8 text-center lg:text-left relative z-20">
               <div className="inline-flex items-center bg-orange-500/10 border border-orange-500/30 rounded-full px-4 py-2 mx-auto lg:mx-0 mb-8">
                 <span className="w-2 h-2 rounded-full bg-orange-500 mr-2 inline-block" aria-hidden="true"></span>
                 <p className="text-orange-500 font-black uppercase text-xs tracking-widest">Spots available for {currentYear}</p>
@@ -480,13 +482,13 @@ const App = () => {
               <div className="flex flex-col sm:flex-row gap-4 pt-6 justify-center lg:justify-start">
                 <button
                   onClick={() => handleNavClick('contact')}
-                  className="px-8 py-3 bg-orange-500 text-black rounded-lg font-black text-sm uppercase tracking-widest hover:bg-white active:scale-95 transition-all duration-200 shadow-lg shadow-orange-500/30"
+                  className="px-8 py-3 bg-orange-500 text-black rounded-lg font-black text-sm uppercase tracking-widest hover:bg-white active:scale-95 transition-all duration-200 shadow-lg shadow-orange-500/30 cursor-pointer"
                 >
                   Book Free Call
                 </button>
                 <button
                   onClick={() => handleNavClick('services')}
-                  className="px-8 py-3 bg-white/10 text-white border border-white/20 rounded-lg font-black text-sm uppercase tracking-widest hover:bg-orange-500 hover:text-black hover:border-orange-500 transition-all duration-200"
+                  className="px-8 py-3 bg-white/10 text-white border border-white/20 rounded-lg font-black text-sm uppercase tracking-widest hover:bg-orange-500 hover:text-black hover:border-orange-500 transition-all duration-200 cursor-pointer"
                 >
                   Explore Plans
                 </button>
@@ -495,9 +497,9 @@ const App = () => {
 
             <div className="lg:col-span-5 relative mt-8 lg:mt-0">
               {/* Decorative Ring */}
-              <div className="absolute inset-0 border-2 border-orange-500/20 rounded-full scale-105 animate-[spin_10s_linear_infinite] border-dashed"></div>
+              <div className="pointer-events-none absolute inset-0 border-2 border-orange-500/20 rounded-full scale-105 animate-[spin_10s_linear_infinite] border-dashed z-0"></div>
 
-              <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[3/4] md:aspect-[4/5] lg:aspect-[4/5] bg-stone-900 border border-white/10 mx-auto max-w-md lg:max-w-full group">
+              <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[3/4] md:aspect-[4/5] lg:aspect-[4/5] bg-stone-900 border border-white/10 mx-auto max-w-md lg:max-w-full group z-10">
                 <img
                   src="lucie_background.jpg"
                   alt="Approachable Performance Nutrition"
