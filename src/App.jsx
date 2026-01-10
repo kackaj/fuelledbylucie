@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { 
-  Instagram, 
-  Mail, 
-  ChevronRight, 
-  Activity, 
-  Zap, 
-  Trophy, 
-  Clock, 
-  Menu, 
-  X, 
-  CheckCircle, 
-  Heart, 
-  Users, 
+import {
+  Instagram,
+  Mail,
+  ChevronRight,
+  Activity,
+  Zap,
+  Trophy,
+  Clock,
+  Menu,
+  X,
+  CheckCircle,
+  Heart,
+  Users,
   Send,
   Flame,
   Plus,
@@ -27,7 +27,7 @@ import {
 
 const GDPRConsentBanner = ({ onAccept, onReject, show }) => {
   if (!show) return null;
-  
+
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-stone-950 border-t border-white/10 p-4 md:p-6 z-50 animate-in slide-in-from-bottom-4 duration-500">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
@@ -38,13 +38,13 @@ const GDPRConsentBanner = ({ onAccept, onReject, show }) => {
           </p>
         </div>
         <div className="flex gap-3 flex-shrink-0 w-full md:w-auto">
-          <button 
+          <button
             onClick={onReject}
             className="flex-1 md:flex-initial px-4 py-2 text-white border border-white/20 rounded-lg text-xs font-bold uppercase tracking-wider hover:border-white/40 transition-colors"
           >
             Decline
           </button>
-          <button 
+          <button
             onClick={onAccept}
             className="flex-1 md:flex-initial px-6 py-2 bg-orange-500 text-black rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-white transition-colors"
           >
@@ -73,7 +73,7 @@ const FAQItem = ({ question, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="border-b border-white/10 last:border-0">
-      <button 
+      <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full py-5 md:py-6 flex justify-between items-center text-left hover:text-orange-400 transition-colors group"
       >
@@ -92,12 +92,12 @@ const FAQItem = ({ question, answer }) => {
 };
 
 const NavLink = ({ onClick, children, mobile = false }) => (
-  <button 
-    onClick={onClick} 
-    className={`${mobile 
-      ? "block w-full text-left text-3xl font-black text-white uppercase tracking-tighter py-3 hover:text-orange-500 border-b border-white/5" 
+  <button
+    onClick={onClick}
+    className={`${mobile
+      ? "block w-full text-left text-3xl font-black text-white uppercase tracking-tighter py-3 hover:text-orange-500 border-b border-white/5"
       : "text-stone-400 hover:text-white font-bold text-xs uppercase tracking-widest transition-all hover:tracking-[0.15em]"
-    }`}
+      }`}
   >
     {children}
   </button>
@@ -106,8 +106,8 @@ const NavLink = ({ onClick, children, mobile = false }) => (
 const ServiceCard = ({ icon: Icon, title, desc, featured = false, onClick, price, duration, items = [] }) => (
   <div className={`
     p-8 md:p-10 rounded-2xl relative overflow-hidden transition-all duration-300 group flex flex-col h-full
-    ${featured 
-      ? 'bg-stone-900 border-2 border-orange-500/50 shadow-[0_20px_40px_-10px_rgba(249,115,22,0.2)]' 
+    ${featured
+      ? 'bg-stone-900 border-2 border-orange-500/50 shadow-[0_20px_40px_-10px_rgba(249,115,22,0.2)]'
       : 'bg-stone-900/40 border border-white/5 hover:border-white/20 text-white'}
   `}>
     {featured && (
@@ -122,7 +122,7 @@ const ServiceCard = ({ icon: Icon, title, desc, featured = false, onClick, price
         {price} {duration && `| ${duration}`}
       </p>
     </div>
-    
+
     <p className="text-stone-400 text-sm mb-6 font-medium leading-relaxed">
       {desc}
     </p>
@@ -167,7 +167,7 @@ const App = () => {
         const response = await fetch('https://ipapi.co/json/', { timeout: 3000 });
         const data = await response.json();
         const euCountries = ['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE'];
-        
+
         if (euCountries.includes(data.country_code)) {
           setIsEURegion(true);
           setShowConsentBanner(true);
@@ -184,7 +184,7 @@ const App = () => {
   const handleConsentAccept = () => {
     localStorage.setItem('gdpr-consent', 'accepted');
     setShowConsentBanner(false);
-    
+
     // Update GA4 consent
     if (window.gtag) {
       window.gtag('consent', 'update', {
@@ -232,14 +232,14 @@ const App = () => {
     setStatus("SUBMITTING");
     const form = e.target;
     const data = new FormData(form);
-    
+
     try {
       const response = await fetch("https://formspree.io/f/xjgkrrlp", {
         method: "POST",
         body: data,
         headers: { 'Accept': 'application/json' }
       });
-      
+
       if (response.ok) {
         setStatus("SUCCESS");
         form.reset();
@@ -257,8 +257,8 @@ const App = () => {
       answer: "Absolutely. I work with everyone from first-time gym-goers to professional athletes. If you have a body and a goal, you need fuel. My job is to make elite-level science work for your everyday life."
     },
     {
-        question: "Do I have to give up my favorite foods?",
-        answer: "No. Sustainable nutrition is built on balance, not restriction. We focus on adding what your body needs rather than just taking things away. We find a way to fit your lifestyle into your goals."
+      question: "Do I have to give up my favorite foods?",
+      answer: "No. Sustainable nutrition is built on balance, not restriction. We focus on adding what your body needs rather than just taking things away. We find a way to fit your lifestyle into your goals."
     },
     {
       question: "I think I eat pretty well, but I am burned out midway through my workout.",
@@ -280,14 +280,14 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-stone-950 font-sans text-stone-300 selection:bg-orange-500 selection:text-black overflow-x-hidden">
-      
+
       {/* GDPR Consent Banner - Only shows to EU users */}
-      <GDPRConsentBanner 
-        show={showConsentBanner} 
+      <GDPRConsentBanner
+        show={showConsentBanner}
         onAccept={handleConsentAccept}
         onReject={handleConsentReject}
       />
-      
+
       {/* Navigation */}
       <nav className={`w-full z-[100] transition-all duration-300 absolute md:fixed ${scrolled ? 'md:bg-stone-950/90 md:backdrop-blur-md py-3 border-b border-white/5' : 'bg-transparent py-4 md:py-6'}`}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -302,14 +302,14 @@ const App = () => {
                 Fuelled<span className="text-orange-500">By</span>Lucie
               </span>
             </div>
-            
+
             {/* Desktop Nav */}
             <div className="hidden md:flex items-center space-x-10">
               <NavLink onClick={() => handleNavClick('about')}>About</NavLink>
               <NavLink onClick={() => handleNavClick('services')}>Services</NavLink>
               <NavLink onClick={() => handleNavClick('faq')}>FAQ</NavLink>
-              <button 
-                onClick={() => handleNavClick('contact')} 
+              <button
+                onClick={() => handleNavClick('contact')}
                 className="bg-orange-500 text-black px-6 py-2 rounded-lg font-black text-xs uppercase tracking-widest hover:bg-white active:scale-95 transition-all duration-200 shadow-lg shadow-orange-500/30"
               >
                 Let's Chat
@@ -327,28 +327,28 @@ const App = () => {
 
         {/* Mobile Menu Overlay */}
         <div className={`fixed inset-0 bg-stone-950 z-[100] transition-transform duration-500 ease-[cubic-bezier(0.76, 0, 0.24, 1)] md:hidden ${isMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
-            <div className="flex flex-col justify-center h-full px-8 space-y-6">
-              <NavLink mobile onClick={() => handleNavClick('about')}>About Me</NavLink>
-              <NavLink mobile onClick={() => handleNavClick('services')}>Services</NavLink>
-              <NavLink mobile onClick={() => handleNavClick('faq')}>Questions</NavLink>
-              <NavLink mobile onClick={() => handleNavClick('contact')}>Contact</NavLink>
-              
-              <div className="pt-8 border-t border-white/10 mt-8">
-                <button 
-                  onClick={() => handleNavClick('contact')} 
-                  className="w-full text-center bg-orange-500 text-black py-3 font-black uppercase text-sm rounded-lg shadow-lg shadow-orange-500/30 active:scale-95 transition-all duration-200"
-                >
-                  Book Free Call
-                </button>
-              </div>
-              
-              <div className="flex flex-col gap-4 pt-4 items-center">
-                 <a href="https://www.instagram.com/fuelledbylucie/" target="_blank" className="flex items-center gap-3 text-stone-500 hover:text-orange-500 transition-colors">
-                    <Instagram className="h-6 w-6" /> <span className="text-sm font-bold tracking-widest">@fuelledbylucie</span>
-                 </a>
-                 <a href="mailto:fuelledbylucie@gmail.com" className="flex items-center gap-3 text-stone-500 hover:text-orange-500 transition-colors">
-                    <Mail className="h-6 w-6" /> <span className="text-sm font-bold tracking-widest">fuelledbylucie@gmail.com</span>
-                 </a>
+          <div className="flex flex-col justify-center h-full px-8 space-y-6">
+            <NavLink mobile onClick={() => handleNavClick('about')}>About Me</NavLink>
+            <NavLink mobile onClick={() => handleNavClick('services')}>Services</NavLink>
+            <NavLink mobile onClick={() => handleNavClick('faq')}>Questions</NavLink>
+            <NavLink mobile onClick={() => handleNavClick('contact')}>Contact</NavLink>
+
+            <div className="pt-8 border-t border-white/10 mt-8">
+              <button
+                onClick={() => handleNavClick('contact')}
+                className="w-full text-center bg-orange-500 text-black py-3 font-black uppercase text-sm rounded-lg shadow-lg shadow-orange-500/30 active:scale-95 transition-all duration-200"
+              >
+                Book Free Call
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-4 pt-4 items-center">
+              <a href="https://www.instagram.com/fuelledbylucie/" target="_blank" className="flex items-center gap-3 text-stone-500 hover:text-orange-500 transition-colors">
+                <Instagram className="h-6 w-6" /> <span className="text-sm font-bold tracking-widest">@fuelledbylucie</span>
+              </a>
+              <a href="mailto:fuelledbylucie@gmail.com" className="flex items-center gap-3 text-stone-500 hover:text-orange-500 transition-colors">
+                <Mail className="h-6 w-6" /> <span className="text-sm font-bold tracking-widest">fuelledbylucie@gmail.com</span>
+              </a>
             </div>
           </div>
         </div>
@@ -358,10 +358,10 @@ const App = () => {
       <section id="home" className="relative flex items-center pt-32 pb-20 md:min-h-screen overflow-hidden">
         {/* Ambient Background */}
         <div className="absolute top-0 right-0 w-3/4 h-3/4 bg-orange-500/5 rounded-full filter blur-[100px] pointer-events-none"></div>
-        
+
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 w-full">
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-            
+
             <div className="lg:col-span-7 space-y-8 text-center lg:text-left">
               <div className="inline-flex items-center bg-orange-500/10 border border-orange-500/30 rounded-full px-4 py-2 mx-auto lg:mx-0 mb-4">
                 <span className="w-2 h-2 rounded-full bg-orange-500 mr-2 inline-block" aria-hidden="true"></span>
@@ -372,22 +372,22 @@ const App = () => {
                 <span className="block">No BS.</span>
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Just Balance.</span>
               </h1>
-              
+
               <div className="flex flex-col gap-3">
-                  <p className="text-lg md:text-2xl text-stone-300 font-bold max-w-xl mx-auto lg:mx-0 leading-tight">
-                Personalized sports nutrition coaching that actually fits your life.
-              </p>
-                  <div className="w-20 h-1 bg-orange-500 mx-auto lg:mx-0 rounded-full mt-2"></div>
+                <p className="text-lg md:text-2xl text-stone-300 font-bold max-w-xl mx-auto lg:mx-0 leading-tight">
+                  Personalized sports nutrition coaching that actually fits your life.
+                </p>
+                <div className="w-20 h-1 bg-orange-500 mx-auto lg:mx-0 rounded-full mt-2"></div>
               </div>
-              
+
               <div className="flex flex-col sm:flex-row gap-4 pt-6 justify-center lg:justify-start">
-                <button 
+                <button
                   onClick={() => handleNavClick('contact')}
                   className="px-8 py-3 bg-orange-500 text-black rounded-lg font-black text-sm uppercase tracking-widest hover:bg-white active:scale-95 transition-all duration-200 shadow-lg shadow-orange-500/30"
                 >
                   Book Free Call
                 </button>
-                <button 
+                <button
                   onClick={() => handleNavClick('services')}
                   className="px-8 py-3 bg-white/10 text-white border border-white/20 rounded-lg font-black text-sm uppercase tracking-widest hover:bg-orange-500 hover:text-black hover:border-orange-500 transition-all duration-200"
                 >
@@ -395,26 +395,26 @@ const App = () => {
                 </button>
               </div>
             </div>
-            
+
             <div className="lg:col-span-5 relative mt-8 lg:mt-0">
-               {/* Decorative Ring */}
-               <div className="absolute inset-0 border-2 border-orange-500/20 rounded-full scale-105 animate-[spin_10s_linear_infinite] border-dashed"></div>
-               
-               <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[3/4] md:aspect-[4/5] lg:aspect-[4/5] bg-stone-900 border border-white/10 mx-auto max-w-md lg:max-w-full group">
-                <img 
-                  src="lucie_background.jpg" 
-                  alt="Approachable Performance Nutrition" 
+              {/* Decorative Ring */}
+              <div className="absolute inset-0 border-2 border-orange-500/20 rounded-full scale-105 animate-[spin_10s_linear_infinite] border-dashed"></div>
+
+              <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[3/4] md:aspect-[4/5] lg:aspect-[4/5] bg-stone-900 border border-white/10 mx-auto max-w-md lg:max-w-full group">
+                <img
+                  src="lucie_background.jpg"
+                  alt="Approachable Performance Nutrition"
                   className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700"
-                  onError={(e) => {e.target.style.display='none'; e.target.parentElement.style.backgroundColor='#1c1917'}}
+                  onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.style.backgroundColor = '#1c1917' }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                
+
                 {/* Float Card */}
                 <div className="absolute bottom-6 left-6 right-6">
                   <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/10">
                     <div className="flex items-center gap-3 mb-2">
-                       <Quote className="h-5 w-5 text-orange-500 fill-orange-500" />
-                       <p className="font-black text-white uppercase text-xs tracking-widest">Lucie's Philosophy</p>
+                      <Quote className="h-5 w-5 text-orange-500 fill-orange-500" />
+                      <p className="font-black text-white uppercase text-xs tracking-widest">Lucie's Philosophy</p>
                     </div>
                     <p className="text-stone-200 text-sm font-medium italic">"Food is fuel, but it's also joy. We need both to thrive."</p>
                   </div>
@@ -429,26 +429,26 @@ const App = () => {
       <section id="about" className="py-20 md:py-32 bg-stone-900/50">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 lg:gap-24 items-start">
-            
+
             <div className="order-2 md:order-1 relative sticky top-32">
-               <div className="absolute -inset-4 bg-orange-500/20 blur-xl rounded-full opacity-50"></div>
-               <div className="rounded-[2rem] overflow-hidden relative shadow-2xl rotate-2 hover:rotate-0 transition-all duration-500">
-                  <img 
-                    src="lucie_hyrox.jpeg" 
-                    alt="Lucie - at Hyrox " 
-                    className="w-full h-full object-cover"
-                    onError={(e) => {e.target.style.display='none'; e.target.parentElement.style.backgroundColor='#1c1917'}}
-                  />
-                  {/* Fallback box if image missing */}
-                  <div className="absolute inset-0 flex items-center justify-center bg-stone-800 -z-10">
-                    <Users className="w-16 h-16 text-stone-700" />
-                  </div>
-               </div>
+              <div className="absolute -inset-4 bg-orange-500/20 blur-xl rounded-full opacity-50"></div>
+              <div className="rounded-[2rem] overflow-hidden relative shadow-2xl rotate-2 hover:rotate-0 transition-all duration-500">
+                <img
+                  src="lucie_hyrox.jpeg"
+                  alt="Lucie - at Hyrox "
+                  className="w-full h-full object-cover"
+                  onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.style.backgroundColor = '#1c1917' }}
+                />
+                {/* Fallback box if image missing */}
+                <div className="absolute inset-0 flex items-center justify-center bg-stone-800 -z-10">
+                  <Users className="w-16 h-16 text-stone-700" />
+                </div>
+              </div>
             </div>
-            
+
             <div className="space-y-8 order-1 md:order-2">
-                <SectionHeader subtitle="The Coach" title={<>Hi, I'm <br/> Lucie 👋</>} />
-              
+              <SectionHeader subtitle="The Coach" title={<>Hi, I'm <br /> Lucie 👋</>} />
+
               <div className="space-y-6 text-lg text-stone-400 leading-relaxed font-medium">
                 <p>
                   I'm a Sydney-based nutritionist, personal trainer, and baker who helps people navigate the noise of the wellness industry.
@@ -459,38 +459,38 @@ const App = () => {
                 <p>
                   With <span className="text-white font-black decoration-orange-500 underline underline-offset-4 decoration-2">7+ years</span> of experience, I break down the complicated nutrition science into practical, doable steps. Whether you want to lift heavier, manage weight, or simply have more energy for your training, I'm here to help you fuel your life, not control it.
                 </p>
-                
+
                 {/* Toggle Story Section */}
                 {!showFullStory ? (
-                    <button 
-                        onClick={() => setShowFullStory(true)}
-                        className="flex items-center gap-2 text-orange-500 font-black uppercase text-xs tracking-widest hover:text-white transition-colors py-2"
-                    >
-                        Read My Full Story <ChevronRight className="h-4 w-4" />
-                </button>
+                  <button
+                    onClick={() => setShowFullStory(true)}
+                    className="flex items-center gap-2 text-orange-500 font-black uppercase text-xs tracking-widest hover:text-white transition-colors py-2"
+                  >
+                    Read My Full Story <ChevronRight className="h-4 w-4" />
+                  </button>
                 ) : (
-                    <div className="animate-in fade-in slide-in-from-top-4 duration-500 space-y-6 border-l-2 border-orange-500/30 pl-6 mt-6">
-                        <p>
-                            My journey into nutrition wasn't started in a classroom; it started from a place of struggle. I spent years fighting my biology, over-restricting, and treating food as the enemy.
-                        </p>
-                        <p>
-                            It wasn't until I started focusing on <em className="text-white not-italic">performance</em>—what my body could do, rather than just what it looked like—that everything changed.
-                        </p>
-                        <p>
-                            Now, I combine deep empathy with hard science. I don't just hand you a PDF and wish you luck. I dig deep into the "why" behind your habits to build a lifestyle that supports your mental health just as much as your physical health.
-                        </p>
-                        <p className="text-2xl font-black italic uppercase tracking-tighter text-white pt-4 leading-none">
-                            Let’s get fuelled ❤️‍🔥
-                        </p>
-                        <button 
-                            onClick={() => setShowFullStory(false)}
-                            className="text-stone-500 font-bold uppercase text-xs tracking-widest hover:text-white transition-colors pt-4"
-                        >
-                            Show Less
-                        </button>
+                  <div className="animate-in fade-in slide-in-from-top-4 duration-500 space-y-6 border-l-2 border-orange-500/30 pl-6 mt-6">
+                    <p>
+                      My journey into nutrition wasn't started in a classroom; it started from a place of struggle. I spent years fighting my biology, over-restricting, and treating food as the enemy.
+                    </p>
+                    <p>
+                      It wasn't until I started focusing on <em className="text-white not-italic">performance</em>—what my body could do, rather than just what it looked like—that everything changed.
+                    </p>
+                    <p>
+                      Now, I combine deep empathy with hard science. I don't just hand you a PDF and wish you luck. I dig deep into the "why" behind your habits to build a lifestyle that supports your mental health just as much as your physical health.
+                    </p>
+                    <p className="text-2xl font-black italic uppercase tracking-tighter text-white pt-4 leading-none">
+                      Let’s get fuelled ❤️‍🔥
+                    </p>
+                    <button
+                      onClick={() => setShowFullStory(false)}
+                      className="text-stone-500 font-bold uppercase text-xs tracking-widest hover:text-white transition-colors pt-4"
+                    >
+                      Show Less
+                    </button>
                   </div>
                 )}
-                
+
                 <div className="flex flex-wrap gap-4 pt-4">
                   <div className="bg-stone-950 px-4 py-2 rounded-lg border border-white/5 flex items-center gap-2">
                     <Heart className="h-4 w-4 text-orange-500" />
@@ -503,20 +503,20 @@ const App = () => {
                 </div>
               </div>
             </div>
-            </div>
+          </div>
         </div>
       </section>
 
       {/* Services Section */}
       <section id="services" className="py-20 md:py-32 bg-stone-950 border-y border-white/5">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          
+
           {/* Quick-Start Options */}
           <div className="mb-32">
             <SectionHeader subtitle="Get Started" title="One-Time Sessions" centered />
             <p className="text-stone-400 text-center mb-12 max-w-2xl mx-auto text-base">Not sure if coaching is right for you? Start with a single session. No commitment.</p>
             <div className="grid md:grid-cols-3 gap-6">
-              <ServiceCard 
+              <ServiceCard
                 icon={Zap}
                 title="First Time?"
                 price="$150"
@@ -525,24 +525,24 @@ const App = () => {
                 items={['Full lifestyle & training assessment', 'Your nutrition goals clarified', 'Personalized fuel strategy', 'Practical weekly food plan', '📍 Online or in-person (Sydney)']}
                 onClick={() => handleNavClick('contact')}
               />
-            <ServiceCard 
-              icon={Clock}
-              title="Already Started?"
-              price="$95"
-              duration="45 Minutes"
-              desc="Get unstuck with targeted adjustments and progress review."
-              items={['Review what\'s working', 'Fix the problem areas', 'New nutrition tweaks', 'Habit & behavior support']}
-              onClick={() => handleNavClick('contact')}
-            />
-            <ServiceCard 
-              icon={Award}
-              title="Event Coming Up?"
-              price="$160"
-              duration="60 Minutes"
-              desc="Race or competition approaching? Get a specific fuel plan that works."
-              items={['Pre-event fuel & hydration', 'During-event fuel strategy', 'Post-event recovery plan', 'Science-backed supplement list']}
-              onClick={() => handleNavClick('contact')}
-            />
+              <ServiceCard
+                icon={Clock}
+                title="Already Started?"
+                price="$95"
+                duration="45 Minutes"
+                desc="Get unstuck with targeted adjustments and progress review."
+                items={['Review what\'s working', 'Fix the problem areas', 'New nutrition tweaks', 'Habit & behavior support']}
+                onClick={() => handleNavClick('contact')}
+              />
+              <ServiceCard
+                icon={Award}
+                title="Event Coming Up?"
+                price="$160"
+                duration="60 Minutes"
+                desc="Race or competition approaching? Get a specific fuel plan that works."
+                items={['Pre-event fuel & hydration', 'During-event fuel strategy', 'Post-event recovery plan', 'Science-backed supplement list']}
+                onClick={() => handleNavClick('contact')}
+              />
             </div>
           </div>
 
@@ -550,7 +550,7 @@ const App = () => {
           <SectionHeader subtitle="Real Change" title="Coaching Programs" centered />
           <p className="text-stone-400 text-center mb-12 max-w-2xl mx-auto">Want lasting results? Pick a program and get personalized support throughout.</p>
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto pt-8">
-            <ServiceCard 
+            <ServiceCard
               icon={Flame}
               title="8-Week Program"
               price="$549"
@@ -558,7 +558,7 @@ const App = () => {
               items={['1 × Full assessment session', '5 × follow-up coaching calls', 'Personalized meal timing guide', 'Training-specific fueling', 'Email support between calls']}
               onClick={() => handleNavClick('contact')}
             />
-            <ServiceCard 
+            <ServiceCard
               featured
               icon={Trophy}
               title="12-Week Program"
@@ -603,12 +603,12 @@ const App = () => {
           </div>
         </div>
       </section>
-      
+
       {/* FAQ Section */}
       <section id="faq" className="py-20 md:py-32 bg-stone-950">
         <div className="max-w-3xl mx-auto px-6">
           <SectionHeader subtitle="Curious?" title="Common Questions" centered />
-          
+
           <div className="mt-12 bg-stone-900/50 rounded-2xl p-6 md:p-8 border border-white/5">
             {faqs.map((faq, index) => (
               <FAQItem key={index} question={faq.question} answer={faq.answer} />
@@ -621,18 +621,18 @@ const App = () => {
       <section id="booking" className="py-24 md:py-40 bg-orange-500 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-multiply"></div>
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-            <h2 className="text-black text-5xl md:text-8xl font-black mb-8 leading-[0.9] tracking-tighter uppercase italic">
-              Ready to feel <br/> Alive?
-            </h2>
-            <p className="text-lg md:text-2xl text-black/80 mb-12 max-w-2xl mx-auto font-bold">
-              Let's have a chat. No pressure, no sales pitch. Just a conversation about where you are and where you want to be.
-            </p>
-            <button 
-              onClick={() => handleNavClick('contact')}
-              className="inline-flex items-center gap-3 px-8 py-3 bg-black text-white font-black text-base rounded-lg hover:bg-stone-900 active:scale-95 transition-all duration-200 shadow-lg uppercase tracking-widest cursor-pointer"
-            >
-              Book Free Call <ChevronRight className="w-4 h-4" />
-            </button>
+          <h2 className="text-black text-5xl md:text-8xl font-black mb-8 leading-[0.9] tracking-tighter uppercase italic">
+            Ready to feel <br /> Alive?
+          </h2>
+          <p className="text-lg md:text-2xl text-black/80 mb-12 max-w-2xl mx-auto font-bold">
+            Let's have a chat. No pressure, no sales pitch. Just a conversation about where you are and where you want to be.
+          </p>
+          <button
+            onClick={() => handleNavClick('contact')}
+            className="inline-flex items-center gap-3 px-8 py-3 bg-black text-white font-black text-base rounded-lg hover:bg-stone-900 active:scale-95 transition-all duration-200 shadow-lg uppercase tracking-widest cursor-pointer"
+          >
+            Book Free Call <ChevronRight className="w-4 h-4" />
+          </button>
         </div>
       </section>
 
@@ -640,110 +640,110 @@ const App = () => {
       <footer id="contact" className="bg-stone-950 text-white pt-24 pb-12 border-t border-white/5">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 mb-20">
-          <div className="space-y-8">
-            <div className="flex items-center gap-2">
-              <Flame className="h-8 w-8 text-orange-500 fill-orange-500" />
+            <div className="space-y-8">
+              <div className="flex items-center gap-2">
+                <Flame className="h-8 w-8 text-orange-500 fill-orange-500" />
                 <span className="font-black text-2xl tracking-tighter uppercase italic">Fuelled<span className="text-orange-500">By</span>Lucie</span>
-            </div>
-            <p className="text-stone-500 text-xl font-medium leading-relaxed max-w-sm">
-              Empowering you to eat with intention and live with energy. Based in Sydney, coaching worldwide.
-            </p>
-            <div className="flex flex-col gap-4">
+              </div>
+              <p className="text-stone-500 text-xl font-medium leading-relaxed max-w-sm">
+                Empowering you to eat with intention and live with energy. Based in Sydney, coaching worldwide.
+              </p>
+              <div className="flex flex-col gap-4">
                 <a href="https://www.instagram.com/fuelledbylucie/" target="_blank" className="flex items-center gap-3 text-stone-400 hover:text-orange-500 transition-colors group">
-                    <div className="p-3 rounded-full bg-stone-900 border border-white/5 group-hover:bg-orange-500 group-hover:text-black transition-all">
-                        <Instagram className="h-5 w-5" />
-                    </div>
-                    <span className="text-sm font-bold tracking-widest">@fuelledbylucie</span>
-              </a>
-              <a href="mailto:fuelledbylucie@gmail.com" className="flex items-center gap-3 text-stone-400 hover:text-orange-500 transition-colors group">
-                <div className="p-3 rounded-full bg-stone-900 border border-white/5 group-hover:bg-orange-500 group-hover:text-black transition-all">
-                  <Mail className="h-5 w-5" />
+                  <div className="p-3 rounded-full bg-stone-900 border border-white/5 group-hover:bg-orange-500 group-hover:text-black transition-all">
+                    <Instagram className="h-5 w-5" />
+                  </div>
+                  <span className="text-sm font-bold tracking-widest">@fuelledbylucie</span>
+                </a>
+                <a href="mailto:fuelledbylucie@gmail.com" className="flex items-center gap-3 text-stone-400 hover:text-orange-500 transition-colors group">
+                  <div className="p-3 rounded-full bg-stone-900 border border-white/5 group-hover:bg-orange-500 group-hover:text-black transition-all">
+                    <Mail className="h-5 w-5" />
+                  </div>
+                  <span className="text-sm font-bold tracking-widest">fuelledbylucie@gmail.com</span>
+                </a>
+              </div>
+            </div>
+
+            <div className="bg-stone-900/50 p-8 rounded-2xl border border-white/5">
+              {status === "SUCCESS" ? (
+                <div className="text-center py-12 animate-in fade-in zoom-in">
+                  <CheckCircle className="h-16 w-16 text-orange-500 mx-auto mb-6" />
+                  <h3 className="text-3xl font-black italic uppercase text-white mb-2">Message Sent!</h3>
+                  <p className="text-stone-400">I'll get back to you within 24 hours to organize your call.</p>
+                  <button onClick={() => setStatus("IDLE")} className="text-orange-500 font-bold uppercase text-xs mt-6 hover:underline">Send another</button>
                 </div>
-                <span className="text-sm font-bold tracking-widest">fuelledbylucie@gmail.com</span>
-              </a>
+              ) : (
+                <form className="space-y-4" onSubmit={handleSubmit}>
+                  <h3 className="text-2xl font-black uppercase italic mb-6 text-white">Send a Message</h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <input required name="name" placeholder="Name" className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700" />
+                    <input required name="phone" type="tel" placeholder="Phone" className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700" />
+                  </div>
+                  <input required name="email" type="email" placeholder="Email" className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700" />
+                  <div className="relative">
+                    <select
+                      name="service"
+                      required
+                      className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 outline-none focus:border-orange-500 appearance-none text-stone-700 font-bold text-sm pr-10"
+                    >
+                      <option value="" disabled selected>Which service interests you?</option>
+                      <optgroup label="Coaching Programs" className="text-white bg-stone-900">
+                        <option value="8-Week Program">8-Week Program</option>
+                        <option value="12-Week Program">12-Week Program</option>
+                      </optgroup>
+                      <optgroup label="One-Time Sessions" className="text-white bg-stone-900">
+                        <option value="First Time Session">First Time?</option>
+                        <option value="Already Started Session">Already Started?</option>
+                        <option value="Event Strategy Session">Event Coming Up?</option>
+                      </optgroup>
+                    </select>
+
+                    {/* Custom Chevron Icon */}
+                    <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                      <svg
+                        className="h-4 w-4 text-stone-500"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
+                  <textarea
+                    required
+                    name="message"
+                    placeholder="What are you looking to achieve?"
+                    rows="4"
+                    className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700"
+                  ></textarea>
+                  <button
+                    type="submit"
+                    disabled={status === "SUBMITTING"}
+                    className="w-full bg-orange-500 text-black py-3 rounded-lg font-black uppercase tracking-widest text-xs hover:bg-white active:scale-95 transition-all duration-200 flex items-center justify-center gap-2"
+                  >
+                    {status === "SUBMITTING" ? "Sending..." : <>Send Message <Send className="h-4 w-4" /></>}
+                  </button>
+                  {status === "ERROR" && <p className="text-orange-500 text-xs font-black uppercase text-center">Something went wrong. Please try again.</p>}
+                </form>
+              )}
             </div>
           </div>
-          
-<div className="bg-stone-900/50 p-8 rounded-2xl border border-white/5">
-  {status === "SUCCESS" ? (
-    <div className="text-center py-12 animate-in fade-in zoom-in">
-      <CheckCircle className="h-16 w-16 text-orange-500 mx-auto mb-6" />
-      <h3 className="text-3xl font-black italic uppercase text-white mb-2">Message Sent!</h3>
-      <p className="text-stone-400">I'll get back to you within 24 hours to organize your call.</p>
-      <button onClick={() => setStatus("IDLE")} className="text-orange-500 font-bold uppercase text-xs mt-6 hover:underline">Send another</button>
-    </div>
-  ) : (
-    <form className="space-y-4" onSubmit={handleSubmit}>
-      <h3 className="text-2xl font-black uppercase italic mb-6 text-white">Send a Message</h3>   
-      <div className="grid md:grid-cols-2 gap-4">
-        <input required name="name" placeholder="Name" className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700" />
-        <input required name="phone" type="tel" placeholder="Phone" className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700" />
-      </div>
-      <input required name="email" type="email" placeholder="Email" className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700" />
-      <div className="relative">
-        <select 
-          name="service" 
-          required 
-          className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 outline-none focus:border-orange-500 appearance-none text-stone-700 font-bold text-sm pr-10"
-        >
-          <option value="" disabled selected>Which service interests you?</option>
-          <optgroup label="Coaching Programs" className="text-white bg-stone-900">
-            <option value="8-Week Program">8-Week Program</option>
-            <option value="12-Week Program">12-Week Program</option>
-          </optgroup>
-          <optgroup label="One-Time Sessions" className="text-white bg-stone-900">
-            <option value="First Time Session">First Time?</option>
-            <option value="Already Started Session">Already Started?</option>
-            <option value="Event Strategy Session">Event Coming Up?</option>
-          </optgroup>
-        </select>
-        
-        {/* Custom Chevron Icon */}
-        <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
-          <svg 
-            className="h-4 w-4 text-stone-500" 
-            fill="none" 
-            viewBox="0 0 24 24" 
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
-      </div>
-      <textarea 
-        required 
-        name="message" 
-        placeholder="What are you looking to achieve?" 
-        rows="4" 
-        className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700"
-      ></textarea>
-      <button 
-        type="submit"
-        disabled={status === "SUBMITTING"}
-        className="w-full bg-orange-500 text-black py-3 rounded-lg font-black uppercase tracking-widest text-xs hover:bg-white active:scale-95 transition-all duration-200 flex items-center justify-center gap-2"
-      >
-        {status === "SUBMITTING" ? "Sending..." : <>Send Message <Send className="h-4 w-4" /></>}
-      </button>
-      {status === "ERROR" && <p className="text-orange-500 text-xs font-black uppercase text-center">Something went wrong. Please try again.</p>}
-    </form>
-  )}
-</div>
-        </div>
           <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-xs font-bold text-stone-600 uppercase tracking-widest">
-                <p>&copy; {currentYear} Fuelled By Lucie.</p>
+              <p>&copy; {currentYear} Fuelled By Lucie.</p>
             </div>
-            
+
             {/* Accreditation Badge */}
             <a href="https://nutritioncouncilaustralia.com.au/nrn/" target="_blank" className="flex items-center gap-3 bg-stone-900 px-4 py-2 rounded-lg border border-white/5 hover:border-orange-500 transition-colors group">
-                <div className="bg-orange-500 p-1.5 rounded-full group-hover:scale-110 transition-transform">
-                    <Award className="h-4 w-4 text-black" />
-                </div>
-                <div className="text-left">
-                    <p className="text-xs text-stone-500 font-bold uppercase tracking-wider">Nationally Recognised Nutritionist</p>
-                    <p className="text-sm text-white font-bold tracking-tight">Nutrition Council Australia</p>
-                    <p className="text-xs text-orange-500 font-bold uppercase tracking-wider mt-0.5">Reg: 1780</p>
-                </div>
+              <div className="bg-orange-500 p-1.5 rounded-full group-hover:scale-110 transition-transform">
+                <Award className="h-4 w-4 text-black" />
+              </div>
+              <div className="text-left">
+                <p className="text-xs text-stone-500 font-bold uppercase tracking-wider">Nationally Recognised Nutritionist</p>
+                <p className="text-sm text-white font-bold tracking-tight">Nutrition Council Australia</p>
+                <p className="text-xs text-orange-500 font-bold uppercase tracking-wider mt-0.5">Reg: 1780</p>
+              </div>
             </a>
           </div>
         </div>
