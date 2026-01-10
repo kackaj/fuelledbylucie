@@ -3,7 +3,6 @@ import {
   Instagram,
   Mail,
   ChevronRight,
-  Activity,
   Zap,
   Trophy,
   Clock,
@@ -17,7 +16,6 @@ import {
   Plus,
   Minus,
   Quote,
-  ArrowRight,
   Dumbbell,
   Award,
   Cookie,
@@ -25,8 +23,33 @@ import {
   Globe
 } from 'lucide-react';
 
+// --- Constants ---
+const NAVBAR_OFFSET = 80;
+const SCROLL_THRESHOLD = 20;
+const SHOW_NAVBAR_SCROLL_THRESHOLD = 50;
+const HIDE_NAVBAR_SCROLL_THRESHOLD = 100;
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xjgkrrlp';
+const INSTAGRAM_HANDLE = 'fuelledbylucie';
+const INSTAGRAM_URL = 'https://www.instagram.com/fuelledbylucie/';
+const EMAIL = 'fuelledbylucie@gmail.com';
+const EU_COUNTRIES = [
+  'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR',
+  'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL',
+  'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE'
+];
+
+const FORM_STATUSES = {
+  IDLE: 'IDLE',
+  SUBMITTING: 'SUBMITTING',
+  SUCCESS: 'SUCCESS',
+  ERROR: 'ERROR'
+};
+
 // --- Sub-Components ---
 
+/**
+ * GDPR Consent Banner - Displays consent request for EU users based on geolocation
+ */
 const GDPRConsentBanner = ({ onAccept, onReject, show }) => {
   if (!show) return null;
 
@@ -58,6 +81,9 @@ const GDPRConsentBanner = ({ onAccept, onReject, show }) => {
   );
 };
 
+/**
+ * Reusable section header component with optional subtitle and decorative dividers
+ */
 const SectionHeader = ({ subtitle, title, centered = false }) => (
   <div className={`mb-12 ${centered ? 'text-center' : ''}`}>
     <h2 className="text-orange-500 font-bold tracking-[0.2em] uppercase text-xs md:text-sm mb-3 flex items-center gap-2 justify-center md:justify-start">
@@ -71,6 +97,9 @@ const SectionHeader = ({ subtitle, title, centered = false }) => (
   </div>
 );
 
+/**
+ * Expandable FAQ accordion item with smooth open/close animation
+ */
 const FAQItem = ({ question, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -93,11 +122,14 @@ const FAQItem = ({ question, answer }) => {
   );
 };
 
+/**
+ * Navigation link component with responsive styling for mobile and desktop
+ */
 const NavLink = ({ onClick, children, mobile = false }) => (
   <button
     onClick={onClick}
     className={`${mobile
-      ? "block w-full text-left text-2xl font-black text-white uppercase tracking-tighter py-4 hover:text-orange-500 border-b border-white/10"
+      ? "block w-full text-left text-xl font-black text-white uppercase tracking-tighter py-4 hover:text-orange-500 border-b border-white/10"
       : "text-stone-400 hover:text-white font-bold text-xs uppercase tracking-widest transition-all hover:tracking-[0.15em]"
       }`}
   >
@@ -105,6 +137,9 @@ const NavLink = ({ onClick, children, mobile = false }) => (
   </button>
 );
 
+/**
+ * Service offering card with optional featured state, pricing, and feature list
+ */
 const ServiceCard = ({ icon: Icon, title, desc, featured = false, onClick, price, duration, items = [] }) => (
   <div className={`
     p-8 md:p-10 rounded-2xl relative overflow-hidden transition-all duration-300 group flex flex-col h-full
@@ -149,31 +184,36 @@ const ServiceCard = ({ icon: Icon, title, desc, featured = false, onClick, price
 // --- Main App ---
 
 const App = () => {
+  // Mobile menu state
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+  // Navbar scroll behavior
   const [scrolled, setScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [status, setStatus] = useState("IDLE");
+  
+  // Form submission state
+  const [status, setStatus] = useState(FORM_STATUSES.IDLE);
+  
+  // Section expansion states
   const [showFullStory, setShowFullStory] = useState(false);
+  
+  // GDPR consent states
   const [showConsentBanner, setShowConsentBanner] = useState(false);
-  const [isEURegion, setIsEURegion] = useState(false);
+  
   const currentYear = new Date().getFullYear();
 
-    // Check if user is in EU and hasn't made a consent decision
+  // Check if user is in EU and hasn't made a consent decision
   useEffect(() => {
     const checkEUAndShowBanner = async () => {
-      // Check if user already made a decision
       const existingConsent = localStorage.getItem('gdpr-consent');
       if (existingConsent) return;
 
       try {
-        // Use a free IP geolocation service to detect EU
         const response = await fetch('https://ipapi.co/json/', { timeout: 3000 });
         const data = await response.json();
-        const euCountries = ['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE'];
-
-        if (euCountries.includes(data.country_code)) {
-          setIsEURegion(true);
+        
+        if (EU_COUNTRIES.includes(data.country_code)) {
           setShowConsentBanner(true);
         }
       } catch (error) {
@@ -202,19 +242,19 @@ const App = () => {
     setShowConsentBanner(false);
   };
 
-  // Scroll visibility logic
+  // Scroll and visibility effects
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       
-      // Update scrolled state for styling
-      setScrolled(currentScrollY > 20);
+      // Update navbar styling based on scroll position
+      setScrolled(currentScrollY > SCROLL_THRESHOLD);
 
-      // Hide/Show logic - Only hide if menu is NOT open
+      // Hide/Show navbar based on scroll direction (only if menu is closed)
       if (!isMenuOpen) {
-        if (currentScrollY < lastScrollY || currentScrollY < 50) {
+        if (currentScrollY < lastScrollY || currentScrollY < SHOW_NAVBAR_SCROLL_THRESHOLD) {
           setIsVisible(true);
-        } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        } else if (currentScrollY > lastScrollY && currentScrollY > HIDE_NAVBAR_SCROLL_THRESHOLD) {
           setIsVisible(false);
         }
       }
@@ -226,57 +266,53 @@ const App = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY, isMenuOpen]);
 
+  // Smooth scroll to element by ID with navbar offset
   const scrollToId = useCallback((id) => {
     if (!id) return;
     const element = document.getElementById(id);
-    if (element) {
-      const offset = 80;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
+    if (!element) return;
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-      setIsMenuOpen(false);
-    }
+    const bodyRect = document.body.getBoundingClientRect().top;
+    const elementRect = element.getBoundingClientRect().top;
+    const elementPosition = elementRect - bodyRect;
+    const offsetPosition = elementPosition - NAVBAR_OFFSET;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+    setIsMenuOpen(false);
   }, []);
 
-  const handleNavClick = (id) => {
+  // Navigation click handler
+  const handleNavClick = useCallback((id) => {
     scrollToId(id);
-  };
+  }, [scrollToId]);
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const handleSubmit = async (e) => {
+  // Handle contact form submission via Formspree
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
-    setStatus("SUBMITTING");
+    setStatus(FORM_STATUSES.SUBMITTING);
     const form = e.target;
     const data = new FormData(form);
 
     try {
-      const response = await fetch("https://formspree.io/f/xjgkrrlp", {
-        method: "POST",
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
         body: data,
         headers: { 'Accept': 'application/json' }
       });
 
       if (response.ok) {
-        setStatus("SUCCESS");
+        setStatus(FORM_STATUSES.SUCCESS);
         form.reset();
       } else {
-        setStatus("ERROR");
+        setStatus(FORM_STATUSES.ERROR);
       }
     } catch (error) {
-      setStatus("ERROR");
+      setStatus(FORM_STATUSES.ERROR);
     }
-  };
+  }, []);
 
   const faqs = [
     {
@@ -360,30 +396,33 @@ const App = () => {
         <div className={`fixed top-0 left-0 w-full h-[100dvh] bg-stone-950 z-[105] transition-transform duration-500 ease-[cubic-bezier(0.76, 0, 0.24, 1)] md:hidden overflow-y-auto
           ${isMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
           
-          <div className="flex flex-col justify-start min-h-full px-8 pt-24 pb-12 space-y-8">
-            <div className="flex flex-col space-y-2">
+          <div className="flex flex-col justify-start min-h-full px-6 pt-24 pb-12 space-y-6">
+            {/* Navigation Links Section */}
+            <div className="flex flex-col space-y-0">
               <NavLink mobile onClick={() => handleNavClick('about')}>About Me</NavLink>
               <NavLink mobile onClick={() => handleNavClick('services')}>Services</NavLink>
               <NavLink mobile onClick={() => handleNavClick('faq')}>Questions</NavLink>
               <NavLink mobile onClick={() => handleNavClick('contact')}>Contact</NavLink>
             </div>
 
-            <div className="pt-4">
+            {/* CTA Button */}
+            <div>
               <button 
                 onClick={() => handleNavClick('contact')} 
-                className="w-full text-center bg-orange-500 text-black py-5 font-black uppercase text-base rounded-xl shadow-lg shadow-orange-500/30"
+                className="w-full text-center bg-orange-500 text-black py-4 font-black uppercase text-sm rounded-lg shadow-lg shadow-orange-500/30 active:scale-95 transition-all duration-200 hover:bg-white hover:shadow-lg hover:shadow-orange-500/50 tracking-widest"
               >
                 Book Free Call
               </button>
             </div>
 
             {/* Socials section */}
-            <div className="flex flex-col gap-5 pt-8 items-center border-t border-white/5">
-              <a href="https://www.instagram.com/fuelledbylucie/" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-stone-400">
-                <Instagram className="h-6 w-6 text-orange-500" /> <span className="text-xs font-bold tracking-[0.2em] uppercase">@fuelledbylucie</span>
+            <div className="flex flex-col gap-3 pt-4 items-center border-t border-white/10">
+              <p className="text-xs font-bold tracking-[0.2em] uppercase text-stone-500 pt-2">Get In Touch</p>
+              <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" className="flex items-center gap-3 text-stone-400 hover:text-orange-500 transition-colors">
+                <Instagram className="h-5 w-5 text-orange-500" /> <span className="text-xs font-bold tracking-[0.2em] uppercase">@{INSTAGRAM_HANDLE}</span>
               </a>
-              <a href="mailto:fuelledbylucie@gmail.com" className="flex items-center gap-3 text-stone-400">
-                <Mail className="h-6 w-6 text-orange-500" /> <span className="text-xs font-bold tracking-[0.2em] uppercase text-center">fuelledbylucie@gmail.com</span>
+              <a href={`mailto:${EMAIL}`} className="flex items-center gap-3 text-stone-400 hover:text-orange-500 transition-colors">
+                <Mail className="h-5 w-5 text-orange-500" /> <span className="text-xs font-bold tracking-[0.2em] uppercase text-center">{EMAIL}</span>
               </a>
             </div>
           </div>
@@ -399,7 +438,7 @@ const App = () => {
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
 
             <div className="lg:col-span-7 space-y-8 text-center lg:text-left">
-              <div className="inline-flex items-center bg-orange-500/10 border border-orange-500/30 rounded-full px-4 py-2 mx-auto lg:mx-0 mb-4">
+              <div className="inline-flex items-center bg-orange-500/10 border border-orange-500/30 rounded-full px-4 py-2 mx-auto lg:mx-0 mb-8">
                 <span className="w-2 h-2 rounded-full bg-orange-500 mr-2 inline-block" aria-hidden="true"></span>
                 <p className="text-orange-500 font-black uppercase text-xs tracking-widest">Spots available for {currentYear}</p>
               </div>
@@ -741,31 +780,31 @@ const App = () => {
                 Empowering you to eat with intention and live with energy. Based in Sydney, coaching worldwide.
               </p>
               <div className="flex flex-col gap-4">
-                <a href="https://www.instagram.com/fuelledbylucie/" target="_blank" className="flex items-center gap-3 text-stone-400 hover:text-orange-500 transition-colors group">
+                <a href={INSTAGRAM_URL} target="_blank" className="flex items-center gap-3 text-stone-400 hover:text-orange-500 transition-colors group">
                   <div className="p-3 rounded-full bg-stone-900 border border-white/5 group-hover:bg-orange-500 group-hover:text-black transition-all">
                     <Instagram className="h-5 w-5" />
                   </div>
-                  <span className="text-sm font-bold tracking-widest">@fuelledbylucie</span>
+                  <span className="text-sm font-bold tracking-widest">@{INSTAGRAM_HANDLE}</span>
                 </a>
-                <a href="mailto:fuelledbylucie@gmail.com" className="flex items-center gap-3 text-stone-400 hover:text-orange-500 transition-colors group">
+                <a href={`mailto:${EMAIL}`} className="flex items-center gap-3 text-stone-400 hover:text-orange-500 transition-colors group">
                   <div className="p-3 rounded-full bg-stone-900 border border-white/5 group-hover:bg-orange-500 group-hover:text-black transition-all">
                     <Mail className="h-5 w-5" />
                   </div>
-                  <span className="text-sm font-bold tracking-widest">fuelledbylucie@gmail.com</span>
+                  <span className="text-sm font-bold tracking-widest">{EMAIL}</span>
                 </a>
               </div>
             </div>
 
             <div className="bg-stone-900/50 p-8 rounded-2xl border border-white/5">
-              {status === "SUCCESS" ? (
+              {status === FORM_STATUSES.SUCCESS ? (
                 <div className="text-center py-12 animate-in fade-in zoom-in">
                   <CheckCircle className="h-16 w-16 text-orange-500 mx-auto mb-6" />
                   <h3 className="text-3xl font-black italic uppercase text-white mb-2">Message Sent!</h3>
                   <p className="text-stone-400">I'll get back to you within 24 hours to organize your call.</p>
-                  <button onClick={() => setStatus("IDLE")} className="text-orange-500 font-bold uppercase text-xs mt-6 hover:underline">Send another</button>
+                  <button onClick={() => setStatus(FORM_STATUSES.IDLE)} className="text-orange-500 font-bold uppercase text-xs mt-6 hover:underline">Send another</button>
                 </div>
               ) : (
-              <form className="space-y-4" onSubmit={handleSubmit}>
+                <form className="space-y-4" onSubmit={handleSubmit}>
                   <h3 className="text-2xl font-black uppercase italic mb-6 text-white">Send a Message</h3>
                   <div className="grid md:grid-cols-2 gap-4">
                     <input required name="name" placeholder="NAME" className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700" />
@@ -811,13 +850,13 @@ const App = () => {
                   ></textarea>
                   <button
                     type="submit"
-                    disabled={status === "SUBMITTING"}
+                    disabled={status === FORM_STATUSES.SUBMITTING}
                     className="w-full bg-orange-500 text-black py-3 rounded-lg font-black uppercase tracking-widest text-xs hover:bg-white active:scale-95 transition-all duration-200 flex items-center justify-center gap-2"
                   >
-                    {status === "SUBMITTING" ? "Sending..." : <>Send Message <Send className="h-4 w-4" /></>}
-                </button>
-                  {status === "ERROR" && <p className="text-orange-500 text-xs font-black uppercase text-center">Something went wrong. Please try again.</p>}
-              </form>
+                    {status === FORM_STATUSES.SUBMITTING ? 'Sending...' : <>Send Message <Send className="h-4 w-4" /></>}
+                  </button>
+                  {status === FORM_STATUSES.ERROR && <p className="text-orange-500 text-xs font-black uppercase text-center">Something went wrong. Please try again.</p>}
+                </form>
               )}
             </div>
           </div>
