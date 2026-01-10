@@ -18,10 +18,42 @@ import {
   Quote,
   ArrowRight,
   Dumbbell,
-  Award
+  Award,
+  Cookie
 } from 'lucide-react';
 
 // --- Sub-Components ---
+
+const GDPRConsentBanner = ({ onAccept, onReject, show }) => {
+  if (!show) return null;
+  
+  return (
+    <div className="fixed bottom-0 left-0 right-0 bg-stone-950 border-t border-white/10 p-4 md:p-6 z-50 animate-in slide-in-from-bottom-4 duration-500">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="flex items-start gap-3 flex-1">
+          <Cookie className="h-5 w-5 text-orange-500 flex-shrink-0 mt-1" />
+          <p className="text-stone-300 text-sm md:text-base font-medium">
+            We use analytics to understand how you use our site. No personal data is shared.
+          </p>
+        </div>
+        <div className="flex gap-3 flex-shrink-0 w-full md:w-auto">
+          <button 
+            onClick={onReject}
+            className="flex-1 md:flex-initial px-4 py-2 text-white border border-white/20 rounded-lg text-xs font-bold uppercase tracking-wider hover:border-white/40 transition-colors"
+          >
+            Decline
+          </button>
+          <button 
+            onClick={onAccept}
+            className="flex-1 md:flex-initial px-6 py-2 bg-orange-500 text-black rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-white transition-colors"
+          >
+            Accept
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const SectionHeader = ({ subtitle, title, centered = false }) => (
   <div className={`mb-12 ${centered ? 'text-center' : ''}`}>
@@ -95,7 +127,52 @@ const App = () => {
   const [scrolled, setScrolled] = useState(false);
   const [status, setStatus] = useState("IDLE");
   const [showFullStory, setShowFullStory] = useState(false);
+  const [showConsentBanner, setShowConsentBanner] = useState(false);
+  const [isEURegion, setIsEURegion] = useState(false);
   const currentYear = new Date().getFullYear();
+
+  // Check if user is in EU and hasn't made a consent decision
+  useEffect(() => {
+    const checkEUAndShowBanner = async () => {
+      // Check if user already made a decision
+      const existingConsent = localStorage.getItem('gdpr-consent');
+      if (existingConsent) return;
+
+      try {
+        // Use a free IP geolocation service to detect EU
+        const response = await fetch('https://ipapi.co/json/', { timeout: 3000 });
+        const data = await response.json();
+        const euCountries = ['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE'];
+        
+        if (euCountries.includes(data.country_code)) {
+          setIsEURegion(true);
+          setShowConsentBanner(true);
+        }
+      } catch (error) {
+        // If geolocation fails, don't show banner (fail-open approach)
+        console.log('Could not detect region, skipping consent banner');
+      }
+    };
+
+    checkEUAndShowBanner();
+  }, []);
+
+  const handleConsentAccept = () => {
+    localStorage.setItem('gdpr-consent', 'accepted');
+    setShowConsentBanner(false);
+    
+    // Update GA4 consent
+    if (window.gtag) {
+      window.gtag('consent', 'update', {
+        'analytics_storage': 'granted'
+      });
+    }
+  };
+
+  const handleConsentReject = () => {
+    localStorage.setItem('gdpr-consent', 'rejected');
+    setShowConsentBanner(false);
+  };
 
   // Safely handle scrolling to an element by ID
   const scrollToId = useCallback((id) => {
@@ -179,6 +256,13 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-stone-950 font-sans text-stone-300 selection:bg-orange-500 selection:text-black overflow-x-hidden">
+      
+      {/* GDPR Consent Banner - Only shows to EU users */}
+      <GDPRConsentBanner 
+        show={showConsentBanner} 
+        onAccept={handleConsentAccept}
+        onReject={handleConsentReject}
+      />
       
       {/* Navigation */}
       <nav className={`w-full z-[100] transition-all duration-300 absolute md:fixed ${scrolled ? 'md:bg-stone-950/90 md:backdrop-blur-md py-3 border-b border-white/5' : 'bg-transparent py-4 md:py-6'}`}>
