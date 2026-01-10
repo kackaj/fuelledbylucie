@@ -97,7 +97,7 @@ const NavLink = ({ onClick, children, mobile = false }) => (
   <button
     onClick={onClick}
     className={`${mobile
-      ? "block w-full text-left text-3xl font-black text-white uppercase tracking-tighter py-3 hover:text-orange-500 border-b border-white/5"
+      ? "block w-full text-left text-2xl font-black text-white uppercase tracking-tighter py-4 hover:text-orange-500 border-b border-white/10"
       : "text-stone-400 hover:text-white font-bold text-xs uppercase tracking-widest transition-all hover:tracking-[0.15em]"
       }`}
   >
@@ -151,13 +151,15 @@ const ServiceCard = ({ icon: Icon, title, desc, featured = false, onClick, price
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const [status, setStatus] = useState("IDLE");
   const [showFullStory, setShowFullStory] = useState(false);
   const [showConsentBanner, setShowConsentBanner] = useState(false);
   const [isEURegion, setIsEURegion] = useState(false);
   const currentYear = new Date().getFullYear();
 
-  // Check if user is in EU and hasn't made a consent decision
+    // Check if user is in EU and hasn't made a consent decision
   useEffect(() => {
     const checkEUAndShowBanner = async () => {
       // Check if user already made a decision
@@ -200,7 +202,30 @@ const App = () => {
     setShowConsentBanner(false);
   };
 
-  // Safely handle scrolling to an element by ID
+  // Scroll visibility logic
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Update scrolled state for styling
+      setScrolled(currentScrollY > 20);
+
+      // Hide/Show logic - Only hide if menu is NOT open
+      if (!isMenuOpen) {
+        if (currentScrollY < lastScrollY || currentScrollY < 50) {
+          setIsVisible(true);
+        } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+          setIsVisible(false);
+        }
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY, isMenuOpen]);
+
   const scrollToId = useCallback((id) => {
     if (!id) return;
     const element = document.getElementById(id);
@@ -291,11 +316,15 @@ const App = () => {
       />
 
       {/* Navigation */}
-      <nav className={`w-full z-[100] transition-all duration-300 absolute md:fixed ${scrolled ? 'md:bg-stone-950/90 md:backdrop-blur-md py-3 border-b border-white/5' : 'bg-transparent py-4 md:py-6'}`}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex justify-between items-center">
+      <nav 
+        className={`w-full z-[100] fixed top-0 left-0 right-0 transition-all duration-500 ease-in-out
+        ${scrolled || isMenuOpen ? 'bg-stone-950 shadow-2xl' : 'bg-transparent'}
+        ${isVisible || isMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}
+      >
+        <div className={`max-w-7xl mx-auto px-6 lg:px-8 transition-all duration-300 ${scrolled ? 'py-3' : 'py-5'}`}>
+          <div className="flex justify-between items-center relative z-[110]">
             {/* Logo */}
-            <div className="flex items-center gap-2 cursor-pointer z-[101]" onClick={() => handleNavClick('home')}>
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => handleNavClick('home')}>
               <div className="relative group">
                 <Flame className="h-6 w-6 text-orange-500 fill-orange-500 transition-transform group-hover:scale-110" />
                 <div className="absolute inset-0 bg-orange-500 blur-lg opacity-40 animate-pulse"></div>
@@ -319,37 +348,42 @@ const App = () => {
             </div>
 
             {/* Mobile Toggle */}
-            <div className="md:hidden z-[101]">
+            <div className="md:hidden">
               <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-white p-1 focus:outline-none">
-                {isMenuOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
+                {isMenuOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile Menu Overlay */}
-        <div className={`fixed inset-0 bg-stone-950 z-[100] transition-transform duration-500 ease-[cubic-bezier(0.76, 0, 0.24, 1)] md:hidden ${isMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
-          <div className="flex flex-col justify-center h-full px-8 space-y-6">
-            <NavLink mobile onClick={() => handleNavClick('about')}>About Me</NavLink>
-            <NavLink mobile onClick={() => handleNavClick('services')}>Services</NavLink>
-            <NavLink mobile onClick={() => handleNavClick('faq')}>Questions</NavLink>
-            <NavLink mobile onClick={() => handleNavClick('contact')}>Contact</NavLink>
+        {/* Fixed Mobile Menu Overlay */}
+        <div className={`fixed top-0 left-0 w-full h-[100dvh] bg-stone-950 z-[105] transition-transform duration-500 ease-[cubic-bezier(0.76, 0, 0.24, 1)] md:hidden overflow-y-auto
+          ${isMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
+          
+          <div className="flex flex-col justify-start min-h-full px-8 pt-24 pb-12 space-y-8">
+            <div className="flex flex-col space-y-2">
+              <NavLink mobile onClick={() => handleNavClick('about')}>About Me</NavLink>
+              <NavLink mobile onClick={() => handleNavClick('services')}>Services</NavLink>
+              <NavLink mobile onClick={() => handleNavClick('faq')}>Questions</NavLink>
+              <NavLink mobile onClick={() => handleNavClick('contact')}>Contact</NavLink>
+            </div>
 
-            <div className="pt-8 border-t border-white/10 mt-8">
-              <button
-                onClick={() => handleNavClick('contact')}
-                className="w-full text-center bg-orange-500 text-black py-3 font-black uppercase text-sm rounded-lg shadow-lg shadow-orange-500/30 active:scale-95 transition-all duration-200"
+            <div className="pt-4">
+              <button 
+                onClick={() => handleNavClick('contact')} 
+                className="w-full text-center bg-orange-500 text-black py-5 font-black uppercase text-base rounded-xl shadow-lg shadow-orange-500/30"
               >
                 Book Free Call
               </button>
             </div>
 
-            <div className="flex flex-col gap-4 pt-4 items-center">
-              <a href="https://www.instagram.com/fuelledbylucie/" target="_blank" className="flex items-center gap-3 text-stone-500 hover:text-orange-500 transition-colors">
-                <Instagram className="h-6 w-6" /> <span className="text-sm font-bold tracking-widest">@fuelledbylucie</span>
+            {/* Socials section */}
+            <div className="flex flex-col gap-5 pt-8 items-center border-t border-white/5">
+              <a href="https://www.instagram.com/fuelledbylucie/" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-stone-400">
+                <Instagram className="h-6 w-6 text-orange-500" /> <span className="text-xs font-bold tracking-[0.2em] uppercase">@fuelledbylucie</span>
               </a>
-              <a href="mailto:fuelledbylucie@gmail.com" className="flex items-center gap-3 text-stone-500 hover:text-orange-500 transition-colors">
-                <Mail className="h-6 w-6" /> <span className="text-sm font-bold tracking-widest">fuelledbylucie@gmail.com</span>
+              <a href="mailto:fuelledbylucie@gmail.com" className="flex items-center gap-3 text-stone-400">
+                <Mail className="h-6 w-6 text-orange-500" /> <span className="text-xs font-bold tracking-[0.2em] uppercase text-center">fuelledbylucie@gmail.com</span>
               </a>
             </div>
           </div>
@@ -377,8 +411,8 @@ const App = () => {
 
               <div className="flex flex-col gap-3">
                 <p className="text-lg md:text-2xl text-stone-300 font-bold max-w-xl mx-auto lg:mx-0 leading-tight">
-                  Personalized sports nutrition coaching that actually fits your life.
-                </p>
+                Personalized sports nutrition coaching that actually fits your life.
+              </p>
                 <div className="w-20 h-1 bg-orange-500 mx-auto lg:mx-0 rounded-full mt-2"></div>
               </div>
 
@@ -731,7 +765,7 @@ const App = () => {
                   <button onClick={() => setStatus("IDLE")} className="text-orange-500 font-bold uppercase text-xs mt-6 hover:underline">Send another</button>
                 </div>
               ) : (
-                <form className="space-y-4" onSubmit={handleSubmit}>
+              <form className="space-y-4" onSubmit={handleSubmit}>
                   <h3 className="text-2xl font-black uppercase italic mb-6 text-white">Send a Message</h3>
                   <div className="grid md:grid-cols-2 gap-4">
                     <input required name="name" placeholder="NAME" className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700" />
@@ -781,9 +815,9 @@ const App = () => {
                     className="w-full bg-orange-500 text-black py-3 rounded-lg font-black uppercase tracking-widest text-xs hover:bg-white active:scale-95 transition-all duration-200 flex items-center justify-center gap-2"
                   >
                     {status === "SUBMITTING" ? "Sending..." : <>Send Message <Send className="h-4 w-4" /></>}
-                  </button>
+                </button>
                   {status === "ERROR" && <p className="text-orange-500 text-xs font-black uppercase text-center">Something went wrong. Please try again.</p>}
-                </form>
+              </form>
               )}
             </div>
           </div>
