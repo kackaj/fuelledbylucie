@@ -20,7 +20,9 @@ import {
   ArrowRight,
   Dumbbell,
   Award,
-  Cookie
+  Cookie,
+  MapPin,
+  Globe
 } from 'lucide-react';
 
 // --- Sub-Components ---
@@ -514,91 +516,147 @@ const App = () => {
           {/* Quick-Start Options */}
           <div className="mb-32">
             <SectionHeader subtitle="Get Started" title="One-Time Sessions" centered />
-            <p className="text-stone-400 text-center mb-12 max-w-2xl mx-auto text-base">Not sure if coaching is right for you? Start with a single session. No commitment.</p>
+            <p className="text-stone-400 text-center mb-12 max-w-2xl mx-auto text-base">
+              Perfect if you’re just getting started or need a specific strategy for an upcoming event.
+            </p>
+
+            <div className="flex flex-wrap justify-center gap-4 mb-16">
+              <div className="inline-flex items-center bg-orange-500/10 border border-orange-500/30 rounded-full px-5 py-2.5 transition-all hover:bg-orange-500/20">
+                <Globe className="w-4 h-4 text-orange-500 mr-3" aria-hidden="true" />
+                <p className="text-orange-500 font-black uppercase text-xs tracking-widest">
+                  Online Worldwide
+                </p>
+              </div>
+
+              <div className="inline-flex items-center bg-orange-500/10 border border-orange-500/30 rounded-full px-5 py-2.5 transition-all hover:bg-orange-500/20">
+                <MapPin className="w-4 h-4 text-orange-500 mr-3" aria-hidden="true" />
+                <p className="text-orange-500 font-black uppercase text-xs tracking-widest">
+                  In-Person (Sydney Inner West)
+                </p>
+              </div>
+            </div>
+
             <div className="grid md:grid-cols-3 gap-6">
               <ServiceCard
                 icon={Zap}
-                title="First Time?"
+                title="Initial Consultation"
                 price="$150"
                 duration="60 Minutes"
-                desc="Get a complete nutrition foundation and personalized strategy to start fueling right."
-                items={['Full lifestyle & training assessment', 'Your nutrition goals clarified', 'Personalized fuel strategy', 'Practical weekly food plan', '📍 Online or in-person (Sydney)']}
+                desc="A complete nutrition and lifestyle assessment to build your personalized strategy."
+                items={[
+                  'Full nutrition & lifestyle audit',
+                  'Performance & energy goal setting',
+                  'Practical food swaps & habits',
+                  'Post-session summary email',
+                ]}
                 onClick={() => handleNavClick('contact')}
               />
+
               <ServiceCard
                 icon={Clock}
-                title="Already Started?"
+                title="Follow-Up Session"
                 price="$95"
                 duration="45 Minutes"
-                desc="Get unstuck with targeted adjustments and progress review."
-                items={['Review what\'s working', 'Fix the problem areas', 'New nutrition tweaks', 'Habit & behavior support']}
+                desc="Keep the momentum going with accountability and necessary plan adjustments. Existing clients only."
+                items={[
+                  'Progress & habit review',
+                  'Nutrition tweaks & education',
+                  'Ongoing support & problem solving',
+                  'Behaviour & habit focus'
+                ]}
                 onClick={() => handleNavClick('contact')}
               />
+
               <ServiceCard
                 icon={Award}
-                title="Event Coming Up?"
-                price="$160"
+                title="Competition Fueling"
+                price="$180"
                 duration="60 Minutes"
-                desc="Race or competition approaching? Get a specific fuel plan that works."
-                items={['Pre-event fuel & hydration', 'During-event fuel strategy', 'Post-event recovery plan', 'Science-backed supplement list']}
+                desc="Specialized strategies for endurance, team sports, or high-intensity events."
+                items={[
+                  'Pre-event fuel & hydration',
+                  'During-event intra-fueling',
+                  'Post-event recovery protocol',
+                  'Evidence-based supplement guidance'
+                ]}
                 onClick={() => handleNavClick('contact')}
               />
             </div>
           </div>
 
           {/* Ongoing Coaching */}
-          <SectionHeader subtitle="Real Change" title="Coaching Programs" centered />
-          <p className="text-stone-400 text-center mb-12 max-w-2xl mx-auto">Want lasting results? Pick a program and get personalized support throughout.</p>
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto pt-8">
-            <ServiceCard
-              icon={Flame}
-              title="8-Week Program"
-              price="$549"
-              desc="Perfect if you want to dial in your nutrition and see quick results."
-              items={['1 × Full assessment session', '5 × follow-up coaching calls', 'Personalized meal timing guide', 'Training-specific fueling', 'Email support between calls']}
-              onClick={() => handleNavClick('contact')}
-            />
-            <ServiceCard
-              featured
-              icon={Trophy}
-              title="12-Week Program"
-              price="$819"
-              desc="The complete package. Transform your nutrition habits and energy levels."
-              items={['1 × Full assessment session', '8 × follow-up coaching calls', 'Complete lifestyle overhaul', 'Macro & meal planning', 'Priority support between calls']}
-              onClick={() => handleNavClick('contact')}
-            />
+          <div id="coaching">
+            <SectionHeader subtitle="Real Change" title="Coaching Programs" centered />
+            <p className="text-stone-400 text-center mb-12 max-w-2xl mx-auto">
+              For athletes and humans ready to dial things in with consistent, expert support.
+            </p>
+
+            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto pt-8">
+              <ServiceCard
+                icon={Flame}
+                title="8-Week Fuel & Flourish"
+                price="~$74 / week ($595 total)"
+                desc="A high-impact sprint to dial in your nutrition and see real performance gains."
+                items={[
+                  '1 × Initial Consultation',
+                  '5 × Follow-up coaching sessions',
+                  'Macro or portion guidance',
+                  'Habit coaching & education',
+                  'Ongoing support via messaging'
+                ]}
+                onClick={() => handleNavClick('contact')}
+              />
+
+              <ServiceCard
+                featured
+                icon={Trophy}
+                title="12-Week Performance Reset"
+                price="~$66 / week ($795 total)"
+                desc="The complete transformation for long-term consistency and total food confidence."
+                items={[
+                  '1 × Initial Consultation',
+                  '8 × Follow-up coaching sessions',
+                  'Full lifestyle + nutrition support',
+                  'Training fuel & recovery education',
+                  'Priority support messaging'
+                ]}
+                onClick={() => handleNavClick('contact')}
+              />
+            </div>
           </div>
 
-          <div className="mt-20 text-center">
-            <p className="text-xs text-stone-600 uppercase tracking-[0.3em] max-w-xl mx-auto leading-relaxed">
-              I provide sports nutrition coaching and performance guidance. Medical nutrition therapy for clinical conditions requires an Accredited Practising Dietitian.
+          {/* Disclaimer */}
+          <div className="mt-24 text-center">
+            <p className="text-xs text-stone-500 uppercase tracking-[0.2em] max-w-2xl mx-auto leading-relaxed italic border-t border-white/5 pt-8">
+              My coaching is designed for performance and lifestyle optimization. For the treatment of clinical medical conditions, please consult with your doctor or a qualified medical professional.
             </p>
           </div>
         </div>
       </section>
 
       {/* Testimonials (Social Proof) */}
-      <section className="py-20 md:py-32 bg-stone-900/30">
+      <section className="py-24 md:py-28 bg-stone-900/30">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <SectionHeader subtitle="From Clients" title="Real Results" centered />
-          <div className="grid md:grid-cols-3 gap-6 mt-12">
-            <div className="bg-stone-950 p-8 rounded-lg border border-white/5">
-              <Quote className="h-8 w-8 text-orange-500 mb-4 opacity-60" />
-              <p className="text-stone-300 text-sm mb-4 leading-relaxed">"Lucie didn't just change my diet, she changed how I view my training."</p>
-              <p className="text-white font-bold text-xs uppercase tracking-wider">Sarah J.</p>
-              <p className="text-orange-500 text-xs font-bold uppercase tracking-wider mt-1">Strength Athlete</p>
+          <div className="grid md:grid-cols-2 gap-12 items-start">
+            <div className="space-y-8">
+              <Quote className="h-10 w-10 text-orange-500 opacity-60" />
+              <h3 className="text-3xl md:text-4xl font-black text-white uppercase italic leading-tight">
+                "Lucie didn't just change my diet, she changed how I view my training."
+              </h3>
+              <div className="mt-2">
+                <p className="text-white font-bold text-lg">Sarah J.</p>
+                <p className="text-orange-500 text-sm font-bold uppercase tracking-wider">Strength Athlete</p>
+              </div>
             </div>
-            <div className="bg-stone-950 p-8 rounded-lg border border-white/5">
-              <Quote className="h-8 w-8 text-orange-500 mb-4 opacity-60" />
-              <p className="text-stone-300 text-sm mb-4 leading-relaxed">"I finally have energy to lift heavy after work. That's worth more than any number on a scale."</p>
-              <p className="text-white font-bold text-xs uppercase tracking-wider">Mike T.</p>
-              <p className="text-orange-500 text-xs font-bold uppercase tracking-wider mt-1">CrossFit Athlete</p>
-            </div>
-            <div className="bg-stone-950 p-8 rounded-lg border border-white/5">
-              <Quote className="h-8 w-8 text-orange-500 mb-4 opacity-60" />
-              <p className="text-stone-300 text-sm mb-4 leading-relaxed">"No judgment. That's the best part. Even when I slipped up, Lucie was there to help me get back on track."</p>
-              <p className="text-white font-bold text-xs uppercase tracking-wider">Elena R.</p>
-              <p className="text-orange-500 text-xs font-bold uppercase tracking-wider mt-1">Runner</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="bg-stone-950 p-6 md:p-8 rounded-2xl border border-white/5 flex flex-col justify-between h-full">
+                <p className="text-stone-400 text-sm md:text-base mb-4">"I finally have energy to lift heavy after work. That's worth more than any number on a scale."</p>
+                <p className="text-white font-bold text-sm uppercase tracking-wider">- Mike T.</p>
+              </div>
+              <div className="bg-stone-950 p-6 md:p-8 rounded-2xl border border-white/5 flex flex-col justify-between h-full">
+                <p className="text-stone-400 text-sm md:text-base mb-4">"No judgment. That's the best part. Even when I slipped up, Lucie was there to help me get back on track."</p>
+                <p className="text-white font-bold text-sm uppercase tracking-wider">- Elena R.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -676,17 +734,17 @@ const App = () => {
                 <form className="space-y-4" onSubmit={handleSubmit}>
                   <h3 className="text-2xl font-black uppercase italic mb-6 text-white">Send a Message</h3>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <input required name="name" placeholder="Name" className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700" />
-                    <input required name="phone" type="tel" placeholder="Phone" className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700" />
+                    <input required name="name" placeholder="NAME" className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700" />
+                    <input required name="phone" type="tel" placeholder="PHONE" className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700" />
                   </div>
-                  <input required name="email" type="email" placeholder="Email" className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700" />
+                  <input required name="email" type="email" placeholder="EMAIL" className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700" />
                   <div className="relative">
                     <select
                       name="service"
                       required
                       className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 outline-none focus:border-orange-500 appearance-none text-stone-700 font-bold text-sm pr-10"
                     >
-                      <option value="" disabled selected>Which service interests you?</option>
+                      <option value="" disabled selected>WHICH SERVICE INTERESTS YOU?</option>
                       <optgroup label="Coaching Programs" className="text-white bg-stone-900">
                         <option value="8-Week Program">8-Week Program</option>
                         <option value="12-Week Program">12-Week Program</option>
@@ -713,7 +771,7 @@ const App = () => {
                   <textarea
                     required
                     name="message"
-                    placeholder="What are you looking to achieve?"
+                    placeholder="WHAT ARE YOU LOOKING TO ACHIEVE?"
                     rows="4"
                     className="w-full bg-stone-950 border border-white/10 rounded-lg p-3 text-white focus:border-orange-500 outline-none text-sm font-bold placeholder:text-stone-700"
                   ></textarea>
