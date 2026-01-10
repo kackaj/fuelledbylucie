@@ -339,10 +339,6 @@ const App = () => {
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
             
             <div className="lg:col-span-7 space-y-8 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-orange-400 text-[10px] font-black tracking-[0.2em] uppercase mx-auto lg:mx-0">
-                <span className="animate-pulse">●</span> Spots available for {currentYear}
-              </div>
-              
               <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black tracking-tighter text-white leading-[0.9] uppercase italic">
                 <span className="block">No Extremes.</span>
                 <span className="block">No BS.</span>
@@ -593,11 +589,8 @@ const App = () => {
                     </div>
                     <span className="text-sm font-bold tracking-widest">@fuelledbylucie</span>
                 </a>
-                <a href="mailto:fuelledbylucie@gmail.com" className="flex items-center gap-3 text-stone-400 hover:text-orange-500 transition-colors group">
-                    <div className="p-3 rounded-full bg-stone-900 border border-white/5 group-hover:bg-orange-500 group-hover:text-black transition-all">
-                        <Mail className="h-5 w-5" />
-                    </div>
-                    <span className="text-sm font-bold tracking-widest">fuelledbylucie@gmail.com</span>
+              <a href="mailto:fuelledbylucie@gmail.com" className="flex items-center gap-3 text-stone-400 hover:text-orange-500 transition-colors">
+                <Mail className="h-5 w-5" /> <span className="text-xs font-bold uppercase tracking-widest">fuelledbylucie@gmail.com</span>
                 </a>
               </div>
             </div>
