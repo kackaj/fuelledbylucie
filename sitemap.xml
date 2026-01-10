@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://fuelledbylucie.com.au/</loc>
+    <lastmod>2026-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    
+    <image:image>
+      <image:loc>https://fuelledbylucie.com.au/lucie_background.jpg</image:loc>
+      <image:title>Lucie | Sports Nutritionist Sydney | Performance & Body Comp</image:title>
+      <image:caption>Evidence-based sports nutrition and personalised meal plans for Sydney athletes looking to optimize body composition and gym performance.</image:caption>
+    </image:image>
+    
+    <image:image>
+      <image:loc>https://fuelledbylucie.com.au/lucie_hyrox.jpeg</image:loc>
+      <image:title>HYROX & Endurance Nutrition Sydney | Fuelled By Lucie</image:title>
+      <image:caption>Specialist competition fueling for Sydney HYROX athletes, CrossFitters, and endurance competitors aiming for peak performance.</image:caption>
+    </image:image>
+
+    <image:image>
+      <image:loc>https://fuelledbylucie.com.au/lucie_weights.png</image:loc>
+      <image:title>Sports Nutritionist Dulwich Hill | Fitstop Performance Fueling</image:title>
+      <image:caption>Lucie performing a sled push at Fitstop Dulwich Hill. Providing local Inner West athletes with performance coaching and strength and conditioning nutrition.</image:caption>
+    </image:image>
+  </url>
+</urlset>
