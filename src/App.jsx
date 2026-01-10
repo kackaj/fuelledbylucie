@@ -186,43 +186,58 @@ const ServiceCard = ({ icon: Icon, title, desc, featured = false, onClick, price
 const App = () => {
   // Mobile menu state
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
+
   // Navbar scroll behavior
   const [scrolled, setScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  
+
   // Form submission state
   const [status, setStatus] = useState(FORM_STATUSES.IDLE);
-  
+
   // Section expansion states
   const [showFullStory, setShowFullStory] = useState(false);
-  
+
   // GDPR consent states
   const [showConsentBanner, setShowConsentBanner] = useState(false);
-  
+
   const currentYear = new Date().getFullYear();
 
-  // Check if user is in EU and hasn't made a consent decision
+  const checkRegion = async () => {
+    const cached = sessionStorage.getItem('is-eu-user');
+    if (cached) return cached === 'true';
+
+    try {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), 1500);
+
+      const res = await fetch('https://ipapi.co/json/', { signal: controller.signal });
+      const data = await res.json();
+      clearTimeout(id);
+
+      const isEU = EU_COUNTRIES.includes(data.country_code);
+      sessionStorage.setItem('is-eu-user', isEU);
+      return isEU;
+    } catch {
+      return true; // Fail closed - assume EU to be safe
+    }
+  };
+
+  // Inside App component:
   useEffect(() => {
-    const checkEUAndShowBanner = async () => {
-      const existingConsent = localStorage.getItem('gdpr-consent');
-      if (existingConsent) return;
-
-      try {
-        const response = await fetch('https://ipapi.co/json/', { timeout: 3000 });
-        const data = await response.json();
-        
-        if (EU_COUNTRIES.includes(data.country_code)) {
-          setShowConsentBanner(true);
+    if (!localStorage.getItem('gdpr-consent')) {
+      checkRegion().then(isEU => {
+        // Set GA4 consent defaults based on region
+        if (window.gtag) {
+          window.gtag('consent', 'update', {
+            'analytics_storage': isEU ? 'denied' : 'granted'
+          });
         }
-      } catch (error) {
-        // If geolocation fails, don't show banner (fail-open approach)
-        console.log('Could not detect region, skipping consent banner');
-      }
-    };
 
-    checkEUAndShowBanner();
+        // Show consent banner only if EU user
+        setShowConsentBanner(isEU);
+      });
+    }
   }, []);
 
   const handleConsentAccept = () => {
@@ -246,7 +261,7 @@ const App = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
+
       // Update navbar styling based on scroll position
       setScrolled(currentScrollY > SCROLL_THRESHOLD);
 
@@ -352,7 +367,7 @@ const App = () => {
       />
 
       {/* Navigation */}
-      <nav 
+      <nav
         className={`w-full z-[100] fixed top-0 left-0 right-0 transition-all duration-500 ease-in-out
         ${scrolled || isMenuOpen ? 'bg-stone-950 shadow-2xl' : 'bg-transparent'}
         ${isVisible || isMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}
@@ -395,7 +410,7 @@ const App = () => {
         {/* Fixed Mobile Menu Overlay */}
         <div className={`fixed top-0 left-0 w-full h-[100dvh] bg-stone-950 z-[105] transition-transform duration-500 ease-[cubic-bezier(0.76, 0, 0.24, 1)] md:hidden overflow-y-auto
           ${isMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
-          
+
           <div className="flex flex-col justify-start min-h-full px-6 pt-24 pb-12 space-y-6">
             {/* Navigation Links Section */}
             <div className="flex flex-col space-y-0">
@@ -407,8 +422,8 @@ const App = () => {
 
             {/* CTA Button */}
             <div>
-              <button 
-                onClick={() => handleNavClick('contact')} 
+              <button
+                onClick={() => handleNavClick('contact')}
                 className="w-full text-center bg-orange-500 text-black py-4 font-black uppercase text-sm rounded-lg shadow-lg shadow-orange-500/30 active:scale-95 transition-all duration-200 hover:bg-white hover:shadow-lg hover:shadow-orange-500/50 tracking-widest"
               >
                 Book Free Call
@@ -442,16 +457,23 @@ const App = () => {
                 <span className="w-2 h-2 rounded-full bg-orange-500 mr-2 inline-block" aria-hidden="true"></span>
                 <p className="text-orange-500 font-black uppercase text-xs tracking-widest">Spots available for {currentYear}</p>
               </div>
-              <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black tracking-tighter text-white leading-[0.9] uppercase italic">
+              {/* Accessibility - Invisible to users */}
+              <h1 className="sr-only">
+                Fuelled By Lucie - also known as Fueled by Lucy | Sports Nutrition & Performance Coaching Sydney Inner West
+              </h1>
+
+              <div className="text-5xl sm:text-6xl lg:text-8xl font-black tracking-tighter text-white leading-[0.9] uppercase italic" aria-hidden="true">
                 <span className="block">No Extremes.</span>
                 <span className="block">No BS.</span>
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Just Balance.</span>
-              </h1>
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">
+                  Just Balance.
+                </span>
+              </div>
 
               <div className="flex flex-col gap-3">
                 <p className="text-lg md:text-2xl text-stone-300 font-bold max-w-xl mx-auto lg:mx-0 leading-tight">
-                Personalized sports nutrition coaching that actually fits your life.
-              </p>
+                  Personalized sports nutrition coaching that actually fits your life.
+                </p>
                 <div className="w-20 h-1 bg-orange-500 mx-auto lg:mx-0 rounded-full mt-2"></div>
               </div>
 

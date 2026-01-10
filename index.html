@@ -1,32 +1,79 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 95C70 95 85 80 85 60C85 45 75 30 60 15C60 15 65 30 65 40C65 55 50 60 45 45C45 35 55 20 50 5C35 15 15 40 15 65C15 82 30 95 50 95Z' fill='%23FF7A00'/></svg>" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FUELLEDBYLUCIE</title>
-    
-    <!-- Google tag (gtag.js) with Consent Mode -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WXH73GNPKC"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      
-      // Check if user has given consent
-      const gdprConsent = localStorage.getItem('gdpr-consent');
-      
-      // Default to 'denied' for tracking, 'granted' for analytics_storage
-      gtag('consent', 'default', {
-        'analytics_storage': gdprConsent === 'accepted' ? 'granted' : 'denied',
-        'ad_storage': 'denied'
-      });
-      
-      gtag('js', new Date());
-      gtag('config', 'G-WXH73GNPKC');
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<html lang="en-AU">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords"
+    content="Fueled by Lucie, Fuelled by Lucy, Fuelled by Lucy Sydney, Fueled by Lucy, Fueld by Lucie, Sports Nutritionist Sydney, Lucy Fitstop Dulwich Hill" />
+  <title>Sports Nutritionist Sydney | Performance Fueling | Fuelled By Lucie</title>
+  <meta name="description"
+    content="Unlock peak performance with Fuelled By Lucie. Expert sports nutrition in Sydney offering personalised meal plans and online performance coaching for athletes.">
+  <link rel="canonical" href="https://fuelledbylucie.com.au/" />
+
+  <link rel="icon" type="image/svg+xml" href="/flame.svg" />
+  <link rel="apple-touch-icon" href="/flame.svg" />
+  <meta name="theme-color" content="#FF7A00" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Sports Nutritionist Sydney | Fuelled By Lucie" />
+  <meta property="og:description" content="Personalised nutrition plans and performance fueling for Sydney athletes." />
+  <meta property="og:url" content="https://fuelledbylucie.com.au/" />
+  <meta property="og:image" content="https://fuelledbylucie.com.au/og-image.jpg" />
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Nutritionist",
+      "@id": "https://fuelledbylucie.com.au/#organization",
+      "name": "Fuelled By Lucie",
+      "alternateName": ["Fueled By Lucie", "Fuelled By Lucy", "Fueled By Lucy", "Fueld By Lucie"],
+      "url": "https://fuelledbylucie.com.au/",
+      "image": "https://fuelledbylucie.com.au/lucie_background.jpg",
+      "priceRange": "$$",
+      "description": "Sydney sports nutritionist offering personalised nutrition plans...",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Petersham",
+        "addressRegion": "NSW",
+        "postalCode": "2049", 
+        "addressCountry": "AU"
+      }
+    }
+  </script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WXH73GNPKC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    const gdprConsent = localStorage.getItem('gdpr-consent');
+    gtag('consent', 'default', {
+      'analytics_storage': gdprConsent === 'accepted' ? 'granted' : 'denied',
+      'ad_storage': 'denied'
+    });
+
+    gtag('js', new Date());
+    gtag('config', 'G-WXH73GNPKC');
+  </script>
+</head>
+
+<body>
+  <noscript>
+    <section>
+      <h1>Fuelled By Lucie | Sports Nutritionist Sydney</h1>
+      <p>Expert sports nutrition and performance fueling for athletes in Sydney, Petersham, and Dulwich Hill.</p>
+      <ul>
+        <li>Personalised Meal Plans</li>
+        <li>HYROX & Endurance Nutrition Coaching</li>
+        <li>CrossFit & Strength Performance Nutrition</li>
+        <li>Online Performance Coaching</li>
+      </ul>
+      <p>Specializing in evidence-based strategies to optimize body composition and athletic performance.</p>
+    </section>
+  </noscript>
+
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>
